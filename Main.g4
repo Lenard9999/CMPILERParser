@@ -1,40 +1,46 @@
-grammar Main;		
+grammar Main;	
+// Starting Node	
 start: EOF;
 
-import_statement : IMPORT_WORD ;
-other_white_space : ((comment)* WHITE_SPACE (comment)*)+ ;
-white_space : (comment | MULTILINE_COMMENT | WHITE_SPACE)* ;
-comment : (MULTILINE_COMMENT | LINE_COMMENT) ;
-variable_declaration: (VARIABLE_TYPE STRING); //add variable declaration with assignment
-array_declaration: variable_declaration OPEN_BRACE NUMBER* CLOSE_BRACE;
 
+// Parsers
+// Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
+assigned_expression: (STRING | NUMBER | LABEL) ;
+variable_declaration_vartype: VARIABLE_TYPE WHITE_SPACE LABEL (WHITE_SPACE EQUAL WHITE_SPACE assigned_expression)? SEMICOLON ;
+variable_declaration_no_vartype: LABEL WHITE_SPACE EQUAL WHITE_SPACE assigned_expression SEMICOLON ;
+array_size : (NUMBER* | (LABEL OPERATORS (LABEL | NUMBER+)) | LABEL) ;
+array_variable : LABEL OPEN_BRACE array_size CLOSE_BRACE;
+array_declaration_vartype: VARIABLE_TYPE OPEN_BRACE CLOSE_BRACE WHITE_SPACE LABEL (WHITE_SPACE CREATE_WORD WHITE_SPACE VARIABLE_TYPE OPEN_BRACE array_size CLOSE_BRACE)? SEMICOLON ;
+array_declaration_no_vartype: array_variable WHITE_SPACE EQUAL WHITE_SPACE (assigned_expression | array_variable) SEMICOLON ;
+
+
+// Lexers
 LOWERCASE : [a-z] ;
 UPPERCASE : [A-z] ;
 DIGIT : [0-9] ;
 NEWLINE : ('\n' | '\r') ;
-CLASS_WORD : 'class' ;
+
+CREATE_WORD : 'create' ;
 RETURN_WORD : 'return' ;
-IMPORT_WORD : 'import' ; 
 INT_DEC : 'int' ; 
-BOOLEAN_DEC : 'boolean';
+BOOLEAN_DEC : 'bool' ;
 FLOAT_DEC : 'float';
 STRING_DEC : 'String' ;
 
 STRING : '"' (LOWERCASE | UPPERCASE | DIGIT)* '"' ;
-NUMBER : '-'?[0-9]*('.'[0-9]+) | '-'?[0-9]+ ;
+NUMBER : '-'?[0-9]*('.'[0-9]+)'f' | '-'?[0-9]+ ;
 LABEL : (LOWERCASE | UPPERCASE | '_')+ ;
 WHITE_SPACE : (' ' | '\r' | '\t' | '\n') ; 
-VARIABLE_TYPE: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC)
-
-LINE_COMMENT : '//' (. | NEWLINE)*? NEWLINE ;
-MULTILINE_COMMENT : '/*' .*? '*/' ;
+VARIABLE_TYPE: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
+OPERATORS : ('+' | '-' | '*' | '/') ;
 
 OPEN_PAREN : '(' ;
 CLOSE_PAREN : ')';
 OPEN_BRACKET : '{' ;
 CLOSE_BRACKET : '}' ;
 OPEN_BRACE : '[' ;
-CLOSE_BRACE : ']'
+CLOSE_BRACE : ']' ;
 SEMICOLON : ';' ;
 COMMA : ',' ;
 EQUAL : '=' ;
+DOUBLEEQUAL : '==' ;
