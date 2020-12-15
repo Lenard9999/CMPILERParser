@@ -54,7 +54,7 @@ print("Thank you very much!");
 
 // scan statement Ex. scan("Give me a random number: ", i+1); 
 scan_statement
-    : SCAN OPEN_PAREN display_message COMMA  CLOSE_PAREN SEMICOLON
+    : SCAN OPEN_PAREN display_message_parameter COMMA  CLOSE_PAREN SEMICOLON
     ;
 
 display_message_parameter 
