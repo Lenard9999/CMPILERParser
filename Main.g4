@@ -72,11 +72,23 @@ constant_declaration
 
 // return statement
 
-// arithmetic statement
+// arithmetic statement Ex. 100*100+100+num
 expression
-    :	expression (OPERATORS) expression
-    |	NUMBER
-    |	OPEN_PAREN expression CLOSE_PAREN
+    : value_expression (FIRST_OPERATORS) expression
+    | value_expression
+    | OPEN_PAREN expression CLOSE_PAREN
+    | sub_expression
+    ;
+
+sub_expression 
+    : value_expression (SECOND_OPERATORS) sub_expression
+    | value_expression
+    | OPEN_PAREN sub_expression CLOSE_PAREN
+    ;
+
+value_expression
+    : NUMBER
+    | LABEL
     ;
 
 // comparison statement (i == 0)
@@ -120,7 +132,8 @@ NUMBER : '-'?[0-9]*('.'[0-9]+)'f'? | '-'?[0-9]+ ;
 LABEL : (LOWERCASE | UPPERCASE | '_')+ ;
 WHITE_SPACE : (' ' | '\r' | '\t' | '\n') ; 
 VARIABLE_TYPE: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
-OPERATORS : (PLUS | MINUS | MULTI | DIV | MOD) ;
+FIRST_OPERATORS : (MULTI | DIV | MOD) ;
+SECOND_OPERATORS : (PLUS | MINUS) ;
 SIMPLE_PUNCTUATIONS : (DOT | COMMA | NOT | QUESTION) ;
 
 CREATE : 'create' ;
