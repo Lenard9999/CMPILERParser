@@ -74,16 +74,13 @@ constant_declaration
 
 // arithmetic statement Ex. 100*100+100+num
 expression
-    : value_expression (FIRST_OPERATORS) expression
-    | value_expression
-    | OPEN_PAREN expression CLOSE_PAREN
-    | sub_expression
+    : sub_expression
+    | expression (FIRST_OPERATORS) sub_expression
     ;
 
 sub_expression 
-    : value_expression (SECOND_OPERATORS) sub_expression
+    : sub_expression (SECOND_OPERATORS) value_expression
     | value_expression
-    | OPEN_PAREN sub_expression CLOSE_PAREN
     ;
 
 value_expression
