@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: EOF;
+start: any_declaration EOF;
 
 
 // Parsers
