@@ -2,42 +2,48 @@ grammar Main;
 // Starting Node	
 start: any_declaration EOF;
 
+variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
+string : '"' (NONDIGIT | DIGIT | white_space | simple_punctuations)* '"' ;
+number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
+label : (NONDIGIT)+ ;
+white_space : (' ' | '\r' | '\t' | '\n') ; 
+first_operators : (MULTI | DIV | MOD) ;
+second_operators : (PLUS | MINUS) ;
+operators : (first_operators | second_operators) ;
+simple_punctuations : (DOT | COMMA | NOT | QUESTION) ;
 
 // Parsers
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
 any_declaration 
     : variable_declaration_vartype
-    | variable_declaration_no_vartype
-    | array_declaration_vartype
-    | array_declaration_no_vartype
     ; 
 
 assigned_expression
-    : (STRING | NUMBER | LABEL) 
+    : (string | number | label) 
     ;
 
 variable_declaration_vartype
-    : VARIABLE_TYPE WHITE_SPACE LABEL (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? SEMICOLON 
+    : variable_type white_space label (white_space? ASSIGN white_space? assigned_expression)? SEMICOLON 
     ;
 
 variable_declaration_no_vartype
-    : LABEL WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression SEMICOLON 
+    : label white_space? ASSIGN white_space? assigned_expression SEMICOLON 
     ;
 
 array_size 
-    : (NUMBER* | (LABEL OPERATORS (LABEL | NUMBER+)) | LABEL) 
+    : (number* | (label operators (label | number+)) | label) 
     ;
 
 array_variable 
-    : LABEL OPEN_BRACE array_size CLOSE_BRACE
+    : label OPEN_BRACE array_size CLOSE_BRACE
     ;
 
 array_declaration_vartype
-    : VARIABLE_TYPE OPEN_BRACE CLOSE_BRACE WHITE_SPACE LABEL (WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE WHITE_SPACE? VARIABLE_TYPE OPEN_BRACE array_size CLOSE_BRACE)? SEMICOLON 
+    : variable_type OPEN_BRACE CLOSE_BRACE white_space label (white_space? ASSIGN white_space? CREATE white_space? variable_type OPEN_BRACE array_size CLOSE_BRACE)? SEMICOLON 
     ;
 
 array_declaration_no_vartype
-    : array_variable WHITE_SPACE? ASSIGN WHITE_SPACE? (assigned_expression | array_variable) SEMICOLON 
+    : array_variable white_space? ASSIGN white_space? (assigned_expression | array_variable) SEMICOLON 
     ;
  
 // print statement
@@ -58,7 +64,7 @@ scan_statement
     ;
 
 display_message_parameter 
-    : STRING
+    : string
     ;
 
 value_parameter
@@ -67,7 +73,7 @@ value_parameter
 
 // constant declaration Ex. [constant int MY_CONSTANT = 500;]
 constant_declaration 
-    : CONSTANT WHITE_SPACE any_declaration
+    : CONSTANT white_space any_declaration
     ;
 
 // return statement
@@ -75,18 +81,18 @@ constant_declaration
 // arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100
 expression
     : sub_expression
-    | expression (FIRST_OPERATORS) sub_expression
+    | expression (first_operators) sub_expression
     | OPEN_PAREN expression CLOSE_PAREN
     ;
 
 sub_expression 
-    : sub_expression (SECOND_OPERATORS) expression
+    : sub_expression (second_operators) expression
     | value_expression
     ;
 
 value_expression
-    : NUMBER
-    | LABEL
+    : number
+    | label
     ;
 
 // comparison statement (i == 0)
@@ -102,46 +108,7 @@ value_expression
 // main function 
 
 
-
 // Lexers
-fragment
-NONDIGIT
-    :   [a-zA-Z_]
-    ;
-
-fragment
-DIGIT
-    :   [0-9]
-    ;
-    
-NEWLINE
-    :   (   '\r' '\n'?
-        |   '\n'
-        )
-        -> skip
-    ;
-
-BLOCKCOMMENT
-    :   '/*' .*? '*/'
-        -> skip
-    ;
-
-LINECOMMENT
-    :   '//' ~[\r\n]*
-        -> skip
-    ;
-
-
-STRING : '"' (NONDIGIT | DIGIT | WHITE_SPACE | SIMPLE_PUNCTUATIONS)* '"' ;
-NUMBER : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
-LABEL : (NONDIGIT | '_')+ ;
-WHITE_SPACE : (' ' | '\r' | '\t' | '\n') ; 
-VARIABLE_TYPE: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
-FIRST_OPERATORS : (MULTI | DIV | MOD) ;
-SECOND_OPERATORS : (PLUS | MINUS) ;
-OPERATORS : (FIRST_OPERATORS | SECOND_OPERATORS) ;
-SIMPLE_PUNCTUATIONS : (DOT | COMMA | NOT | QUESTION) ;
-
 CREATE : 'create' ;
 CONSTANT : 'constant' ;
 RETURN : 'return' ;
@@ -161,7 +128,7 @@ VOID : 'void' ;
 INT_DEC : 'int' ; 
 BOOLEAN_DEC : 'bool' ;
 FLOAT_DEC : 'float';
-STRING_DEC : 'String' ;
+STRING_DEC : 'string' ;
 
 OPEN_PAREN : '(' ;
 CLOSE_PAREN : ')';
@@ -194,3 +161,27 @@ COLON : ':';
 DOT : '.';
 SEMICOLON : ';' ;
 COMMA : ',' ;
+    
+NONDIGIT
+    :   [a-zA-Z_]
+    ;
+
+DIGIT
+    :   [0-9]
+    ;
+NEWLINE
+    :   (   '\r' '\n'?
+        |   '\n'
+        )
+        -> skip
+    ;
+
+BLOCKCOMMENT
+    :   '/*' .*? '*/'
+        -> skip
+    ;
+
+LINECOMMENT
+    :   '//' ~[\r\n]*
+        -> skip
+    ;

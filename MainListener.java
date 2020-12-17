@@ -1,4 +1,4 @@
-// Generated from .\Main.g4 by ANTLR 4.9
+// Generated from Main.g4 by ANTLR 4.9
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -16,6 +16,96 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStart(MainParser.StartContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#variable_type}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable_type(MainParser.Variable_typeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#variable_type}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable_type(MainParser.Variable_typeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#string}.
+	 * @param ctx the parse tree
+	 */
+	void enterString(MainParser.StringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#string}.
+	 * @param ctx the parse tree
+	 */
+	void exitString(MainParser.StringContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumber(MainParser.NumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumber(MainParser.NumberContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#label}.
+	 * @param ctx the parse tree
+	 */
+	void enterLabel(MainParser.LabelContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#label}.
+	 * @param ctx the parse tree
+	 */
+	void exitLabel(MainParser.LabelContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#white_space}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhite_space(MainParser.White_spaceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#white_space}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhite_space(MainParser.White_spaceContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#first_operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterFirst_operators(MainParser.First_operatorsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#first_operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitFirst_operators(MainParser.First_operatorsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#second_operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterSecond_operators(MainParser.Second_operatorsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#second_operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitSecond_operators(MainParser.Second_operatorsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterOperators(MainParser.OperatorsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitOperators(MainParser.OperatorsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#any_declaration}.
 	 * @param ctx the parse tree

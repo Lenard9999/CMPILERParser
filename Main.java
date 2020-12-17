@@ -1,5 +1,4 @@
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -18,6 +17,7 @@ public class Main {
         Lexer lexer = new MainLexer(cStream);
         TokenStream tokenStream = new CommonTokenStream(lexer);
         MainParser parser = new MainParser(tokenStream);
+        parser.removeErrorListeners();
         ParseTree tree = parser.start();
 
         // Tree Viewer
@@ -30,15 +30,12 @@ public class Main {
         CharStream cStream = CharStreams.fromFileName("inputtext.txt");
 
         CustomErrorListener customErrorListener = new CustomErrorListener();
-
         Lexer lexer = new MainLexer(cStream);
-        lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
-        lexer.addErrorListener(customErrorListener);
 
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        TokenStream tokens = new CommonTokenStream(lexer);
 
         MainParser parser = new MainParser(tokens);
-        parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
+        parser.removeErrorListeners();
         parser.addErrorListener(customErrorListener);
 
         ParseTree tree = parser.start();
