@@ -17,43 +17,153 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitStart(MainParser.StartContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#import_statement}.
+	 * Enter a parse tree produced by {@link MainParser#any_declaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterImport_statement(MainParser.Import_statementContext ctx);
+	void enterAny_declaration(MainParser.Any_declarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MainParser#import_statement}.
+	 * Exit a parse tree produced by {@link MainParser#any_declaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitImport_statement(MainParser.Import_statementContext ctx);
+	void exitAny_declaration(MainParser.Any_declarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#other_white_space}.
+	 * Enter a parse tree produced by {@link MainParser#assigned_expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterOther_white_space(MainParser.Other_white_spaceContext ctx);
+	void enterAssigned_expression(MainParser.Assigned_expressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MainParser#other_white_space}.
+	 * Exit a parse tree produced by {@link MainParser#assigned_expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitOther_white_space(MainParser.Other_white_spaceContext ctx);
+	void exitAssigned_expression(MainParser.Assigned_expressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#white_space}.
+	 * Enter a parse tree produced by {@link MainParser#variable_declaration_vartype}.
 	 * @param ctx the parse tree
 	 */
-	void enterWhite_space(MainParser.White_spaceContext ctx);
+	void enterVariable_declaration_vartype(MainParser.Variable_declaration_vartypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MainParser#white_space}.
+	 * Exit a parse tree produced by {@link MainParser#variable_declaration_vartype}.
 	 * @param ctx the parse tree
 	 */
-	void exitWhite_space(MainParser.White_spaceContext ctx);
+	void exitVariable_declaration_vartype(MainParser.Variable_declaration_vartypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#comment}.
+	 * Enter a parse tree produced by {@link MainParser#variable_declaration_no_vartype}.
 	 * @param ctx the parse tree
 	 */
-	void enterComment(MainParser.CommentContext ctx);
+	void enterVariable_declaration_no_vartype(MainParser.Variable_declaration_no_vartypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MainParser#comment}.
+	 * Exit a parse tree produced by {@link MainParser#variable_declaration_no_vartype}.
 	 * @param ctx the parse tree
 	 */
-	void exitComment(MainParser.CommentContext ctx);
+	void exitVariable_declaration_no_vartype(MainParser.Variable_declaration_no_vartypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#array_size}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_size(MainParser.Array_sizeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#array_size}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_size(MainParser.Array_sizeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#array_variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_variable(MainParser.Array_variableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#array_variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_variable(MainParser.Array_variableContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#array_declaration_vartype}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_declaration_vartype(MainParser.Array_declaration_vartypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#array_declaration_vartype}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_declaration_vartype(MainParser.Array_declaration_vartypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#array_declaration_no_vartype}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_declaration_no_vartype(MainParser.Array_declaration_no_vartypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#array_declaration_no_vartype}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_declaration_no_vartype(MainParser.Array_declaration_no_vartypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#scan_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterScan_statement(MainParser.Scan_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#scan_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitScan_statement(MainParser.Scan_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#display_message_parameter}.
+	 * @param ctx the parse tree
+	 */
+	void enterDisplay_message_parameter(MainParser.Display_message_parameterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#display_message_parameter}.
+	 * @param ctx the parse tree
+	 */
+	void exitDisplay_message_parameter(MainParser.Display_message_parameterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#value_parameter}.
+	 * @param ctx the parse tree
+	 */
+	void enterValue_parameter(MainParser.Value_parameterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#value_parameter}.
+	 * @param ctx the parse tree
+	 */
+	void exitValue_parameter(MainParser.Value_parameterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#constant_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstant_declaration(MainParser.Constant_declarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#constant_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstant_declaration(MainParser.Constant_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(MainParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(MainParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#sub_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSub_expression(MainParser.Sub_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#sub_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSub_expression(MainParser.Sub_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#value_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterValue_expression(MainParser.Value_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#value_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitValue_expression(MainParser.Value_expressionContext ctx);
 }
