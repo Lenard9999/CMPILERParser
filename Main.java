@@ -1,4 +1,5 @@
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -31,13 +32,13 @@ public class Main {
         CustomErrorListener customErrorListener = new CustomErrorListener();
 
         Lexer lexer = new MainLexer(cStream);
-        lexer.removeErrorListeners();
+        lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
         lexer.addErrorListener(customErrorListener);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         MainParser parser = new MainParser(tokens);
-        parser.removeErrorListeners();
+        parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
         parser.addErrorListener(customErrorListener);
 
         ParseTree tree = parser.start();

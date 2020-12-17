@@ -104,9 +104,16 @@ value_expression
 
 
 // Lexers
-LOWERCASE : [a-z] ;
-UPPERCASE : [A-z] ;
-DIGIT : [0-9] ;
+fragment
+NONDIGIT
+    :   [a-zA-Z_]
+    ;
+
+fragment
+DIGIT
+    :   [0-9]
+    ;
+    
 NEWLINE
     :   (   '\r' '\n'?
         |   '\n'
@@ -125,9 +132,9 @@ LINECOMMENT
     ;
 
 
-STRING : '"' (LOWERCASE | UPPERCASE | DIGIT | WHITE_SPACE | SIMPLE_PUNCTUATIONS)* '"' ;
-NUMBER : '-'?[0-9]*('.'[0-9]+)'f'? | '-'?[0-9]+ ;
-LABEL : (LOWERCASE | UPPERCASE | '_')+ ;
+STRING : '"' (NONDIGIT | DIGIT | WHITE_SPACE | SIMPLE_PUNCTUATIONS)* '"' ;
+NUMBER : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
+LABEL : (NONDIGIT | '_')+ ;
 WHITE_SPACE : (' ' | '\r' | '\t' | '\n') ; 
 VARIABLE_TYPE: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 FIRST_OPERATORS : (MULTI | DIV | MOD) ;
