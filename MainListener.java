@@ -167,6 +167,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitArray_variable(MainParser.Array_variableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#array_assign}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_assign(MainParser.Array_assignContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#array_assign}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_assign(MainParser.Array_assignContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#array_declaration_vartype}.
 	 * @param ctx the parse tree
 	 */
