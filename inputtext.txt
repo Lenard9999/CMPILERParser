@@ -1,1 +1,1 @@
-int[] x = y[arr + 1];
+float fX = 2.0f;

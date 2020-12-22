@@ -3,9 +3,9 @@ grammar Main;
 start: any_declaration EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
-string : '"' (NONDIGIT | DIGIT | simple_punctuations | label | white_space)+ '"' ;
+string : '"' (DIGIT | simple_punctuations | label | white_space)+ '"' ;
 number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
-label : (NONDIGIT)+ ;
+label : (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ variable_type* ; // WEIRD YUN f and BAWAL same name sa variable types yun label
 white_space : (' ' | '\r' | '\t' | '\n') ; 
 first_operators : (MULTI | DIV | MOD) ;
 second_operators : (PLUS | MINUS) ;
@@ -79,7 +79,7 @@ value_parameter
     : expression
     ;
 
-// constant declaration Ex. [constant int MY_CONSTANT = 500;]
+// constant declaration Ex. constant int MY_CONSTANT = 500;
 constant_declaration 
     : CONSTANT white_space any_declaration
     ;
@@ -137,7 +137,7 @@ VOID : 'void' ;
 INT_DEC : 'int' ; 
 BOOLEAN_DEC : 'bool' ;
 FLOAT_DEC : 'float';
-STRING_DEC : 'string' ;
+STRING_DEC : 'String' ;
 
 OPEN_PAREN : '(' ;
 CLOSE_PAREN : ')';
@@ -170,9 +170,14 @@ COLON : ':';
 DOT : '.';
 SEMICOLON : ';' ;
 COMMA : ',' ;
+UNDERSCORE : '_' ;
     
-NONDIGIT
-    :   [a-zA-Z_]
+LOWERCASE
+    : [a-z]
+    ;
+
+UPPERCASE
+    : [A-Z]
     ;
 
 DIGIT
