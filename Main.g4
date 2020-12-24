@@ -5,12 +5,16 @@ start: any_declaration EOF;
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | simple_punctuations | label | white_space)+ '"' ;
 number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
-label : (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ variable_type* ; // WEIRD YUN f and BAWAL same name sa variable types yun label
+label : variable_type* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ variable_type* label*; // WEIRD YUN f and BAWAL same name sa variable types yun label
 white_space : (' ' | '\r' | '\t' | '\n') ; 
+simple_punctuations : (DOT | COMMA | NOT | QUESTION| COLON) ;
+
 first_operators : (MULTI | DIV | MOD) ;
 second_operators : (PLUS | MINUS) ;
 operators : (first_operators | second_operators) ;
-simple_punctuations : (DOT | COMMA | NOT | QUESTION| COLON) ;
+
+logical_operators: (ANDAND | OROR) ;
+relational_operators: (LESS | LESSQEUAL | GREATER | GREATEREQUAL) ;
 
 // Parsers
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
@@ -22,7 +26,7 @@ any_declaration
     ; 
 
 assigned_expression
-    : (string | number | label) 
+    : (string | number | label | expression | comparison_statement) 
     ;
 
 variable_declaration_vartype
@@ -60,7 +64,7 @@ Ex.
 print("Your number is: " +i);
 print("X is " +x+ " while Y is " +y);
 print("Let's add them! Result is: " +(x + y));
-print("Let's do something complicated! " +((x + y + z) * (x*y)/fX);
+print("Let's do something complicated! " +((x + y + z) * (x*y)/fX));
 print("Thank you very much!");
 */
 
@@ -86,16 +90,11 @@ constant_declaration
 
 // return statement
 
-// arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100
+// arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100, (x * 50) * (x * 15)
 expression
-    : sub_expression
-    | expression white_space? (first_operators) white_space? sub_expression
+    : value_expression
+    | expression white_space? (operators) white_space? expression
     | OPEN_PAREN white_space? expression white_space? CLOSE_PAREN
-    ;
-
-sub_expression 
-    : sub_expression white_space? (second_operators) white_space? expression
-    | value_expression
     ;
 
 value_expression
@@ -103,7 +102,23 @@ value_expression
     | label
     ;
 
-// comparison statement (i == 0)
+// comparison statement Ex. i == 0, (5 > 4 && T) || (F && !(x==0))
+comparison_statement
+    : value_comparison
+    | assignment_statement
+    | comparison_statement white_space? (relational_operators | logical_operators) white_space? comparison_statement
+    | NOT? OPEN_PAREN white_space? comparison_statement white_space? CLOSE_PAREN
+    ;
+
+assignment_statement
+    : label white_space? EQUAL white_space? (value_comparison | string)
+    | NOT? OPEN_PAREN white_space? assignment_statement white_space? CLOSE_PAREN
+    ;
+
+value_comparison
+    : label
+    | number
+    ;
 
 // conditional statement (if else)
 
@@ -157,8 +172,6 @@ MULTI : '*';
 DIV : '/';
 MOD : '%';
 
-AND : '&';
-OR : '|';
 ANDAND : '&&';
 OROR : '||';
 NOT : '!';

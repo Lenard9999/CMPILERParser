@@ -67,6 +67,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitWhite_space(MainParser.White_spaceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#first_operators}.
 	 * @param ctx the parse tree
 	 */
@@ -97,15 +107,25 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitOperators(MainParser.OperatorsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * Enter a parse tree produced by {@link MainParser#logical_operators}.
 	 * @param ctx the parse tree
 	 */
-	void enterSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
+	void enterLogical_operators(MainParser.Logical_operatorsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * Exit a parse tree produced by {@link MainParser#logical_operators}.
 	 * @param ctx the parse tree
 	 */
-	void exitSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
+	void exitLogical_operators(MainParser.Logical_operatorsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#relational_operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelational_operators(MainParser.Relational_operatorsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#relational_operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelational_operators(MainParser.Relational_operatorsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#any_declaration}.
 	 * @param ctx the parse tree
@@ -247,16 +267,6 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitExpression(MainParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#sub_expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterSub_expression(MainParser.Sub_expressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MainParser#sub_expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitSub_expression(MainParser.Sub_expressionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MainParser#value_expression}.
 	 * @param ctx the parse tree
 	 */
@@ -266,4 +276,34 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValue_expression(MainParser.Value_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#comparison_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterComparison_statement(MainParser.Comparison_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#comparison_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitComparison_statement(MainParser.Comparison_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#assignment_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignment_statement(MainParser.Assignment_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#assignment_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignment_statement(MainParser.Assignment_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#value_comparison}.
+	 * @param ctx the parse tree
+	 */
+	void enterValue_comparison(MainParser.Value_comparisonContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#value_comparison}.
+	 * @param ctx the parse tree
+	 */
+	void exitValue_comparison(MainParser.Value_comparisonContext ctx);
 }
