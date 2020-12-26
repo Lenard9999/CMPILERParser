@@ -1,1 +1,1 @@
-print("Thank you very much!");
+(1+1)*1+1+((1+1)+1)/1

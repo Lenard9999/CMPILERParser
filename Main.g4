@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: print_statement EOF;
+start: expression EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -120,6 +120,7 @@ return_value
 expression
     : value_expression
     | expression WHITE_SPACE? (operators) WHITE_SPACE? expression
+    | expression WHITE_SPACE? (operators operators+) WHITE_SPACE? expression {notifyErrorListeners("Multiple operators");}
     | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
     ;
 
@@ -232,14 +233,8 @@ NEWLINE
         -> skip
     ;
 
-BLOCKCOMMENT
-    :   '/' .? '/'
-        -> skip
-    ;
-
 LINECOMMENT
-    :   '//' ~[\r\n]
-        -> skip
+    :   '//' ~[\r\n]* NEWLINE?
     ;
 
 WHITE_SPACE 
