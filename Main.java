@@ -25,8 +25,8 @@ public class Main {
         viewer.open();
     }
 
-    public static void main(String[] args) throws Exception {
-
+    public static void parse() throws Exception {
+        // CharStream cStream = CharStreams.fromString(this.input); for GUI
         CharStream cStream = CharStreams.fromFileName("inputtext.txt");
 
         CustomErrorListener customErrorListener = new CustomErrorListener();
@@ -42,6 +42,15 @@ public class Main {
         ParseTreeWalker walker = new ParseTreeWalker();
 
         walker.walk(new MainBaseListener(), tree);
+
+        if(customErrorListener.getErrorList() == 0){
+            System.out.println("No Syntax Errors");
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        parse();
+        // parse(this.input); for GUI
         showTree();
     }
 }

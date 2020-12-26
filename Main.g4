@@ -1,20 +1,27 @@
 grammar Main;	
 // Starting Node	
-start: any_declaration EOF;
+start: print_statement EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
-string : '"' (DIGIT | simple_punctuations | label | white_space)+ '"' ;
+string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
 number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
 label : variable_type* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ variable_type* label*; // WEIRD YUN f and BAWAL same name sa variable types yun label
-white_space : (' ' | '\r' | '\t' | '\n') ; 
-simple_punctuations : (DOT | COMMA | NOT | QUESTION| COLON) ;
 
+// Operators
 first_operators : (MULTI | DIV | MOD) ;
 second_operators : (PLUS | MINUS) ;
 operators : (first_operators | second_operators) ;
-
 logical_operators: (ANDAND | OROR) ;
 relational_operators: (LESS | LESSQEUAL | GREATER | GREATEREQUAL) ;
+other_operators : (logical_operators | relational_operators) ;
+
+// need for masama yun mga lexer predefined words
+lexer_predefined_words : (constant_words | conditional_words | loop_words | simple_punctuations | symbol_words | other_operators | operators | variable_type) ;
+constant_words : (CREATE | CONSTANT | RETURN | PRINT | SCAN | VOID) ;
+conditional_words : (IF | ELSE | ELSE_IF | THEN) ;
+loop_words : (FOR | UP_TO | DOWN_TO | WHILE) ;
+simple_punctuations : (ASSIGN | EQUAL | SEMICOLON | DOT | COMMA | NOT | QUESTION | COLON | UNDERSCORE | SINGLE_QUOTE) ;
+symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_BRACE | CLOSE_BRACE) ;
 
 // Parsers
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
@@ -30,11 +37,11 @@ assigned_expression
     ;
 
 variable_declaration_vartype
-    : variable_type white_space label (white_space? ASSIGN white_space? assigned_expression)? SEMICOLON 
+    : variable_type WHITE_SPACE label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? SEMICOLON 
     ;
 
 variable_declaration_no_vartype
-    : label white_space? ASSIGN white_space? assigned_expression SEMICOLON 
+    : label WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression SEMICOLON 
     ;
 
 array_size 
@@ -46,16 +53,16 @@ array_variable
     ;
 
 array_assign
-    : white_space? ASSIGN white_space? CREATE white_space? variable_type OPEN_BRACE array_size CLOSE_BRACE
-    | white_space? ASSIGN white_space? array_variable
+    : WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE array_size CLOSE_BRACE
+    | WHITE_SPACE? ASSIGN WHITE_SPACE? array_variable
     ;
 
 array_declaration_vartype
-    : variable_type OPEN_BRACE CLOSE_BRACE white_space label array_assign? SEMICOLON 
+    : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE label array_assign? SEMICOLON 
     ;
 
 array_declaration_no_vartype
-    : array_variable white_space? ASSIGN white_space? CREATE? white_space? (assigned_expression | array_variable) SEMICOLON
+    : array_variable WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE? WHITE_SPACE? (assigned_expression | array_variable) SEMICOLON
     ;
  
 // print statement
@@ -67,12 +74,23 @@ print("Let's add them! Result is: " +(x + y));
 print("Let's do something complicated! " +((x + y + z) * (x*y)/fX));
 print("Thank you very much!");
 */
+print_statement
+    : PRINT OPEN_PAREN value_print CLOSE_PAREN SEMICOLON
+    ;
 
+value_print
+    : string WHITE_SPACE? (PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
+    ;
 
+extended_value_print
+    : string
+    | label
+    | expression
+    ;
 
 // scan statement Ex. scan("Give me a random number: ", i+1); 
 scan_statement
-    : SCAN OPEN_PAREN display_message_parameter white_space? COMMA white_space? value_parameter CLOSE_PAREN SEMICOLON
+    : SCAN OPEN_PAREN display_message_parameter WHITE_SPACE? COMMA WHITE_SPACE? value_parameter CLOSE_PAREN SEMICOLON
     ;
 
 display_message_parameter 
@@ -85,16 +103,24 @@ value_parameter
 
 // constant declaration Ex. constant int MY_CONSTANT = 500;
 constant_declaration 
-    : CONSTANT white_space any_declaration
+    : CONSTANT WHITE_SPACE any_declaration
     ;
 
-// return statement
+// return statement Ex. return n * factorial(n - 1); return 1; return arr_type;
+return_statement
+    : RETURN WHITE_SPACE return_value SEMICOLON
+    | RETURN WHITE_SPACE variable_type SEMICOLON  {notifyErrorListeners("Invalid return value");}
+    ;
+
+return_value
+    : (string | number | label | expression)
+    ;
 
 // arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100, (x * 50) * (x * 15)
 expression
     : value_expression
-    | expression white_space? (operators) white_space? expression
-    | OPEN_PAREN white_space? expression white_space? CLOSE_PAREN
+    | expression WHITE_SPACE? (operators) WHITE_SPACE? expression
+    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
     ;
 
 value_expression
@@ -106,15 +132,16 @@ value_expression
 comparison_statement
     : value_comparison
     | assignment_statement
-    | comparison_statement white_space? (relational_operators | logical_operators) white_space? comparison_statement
-    | NOT? OPEN_PAREN white_space? comparison_statement white_space? CLOSE_PAREN
+    | comparison_statement WHITE_SPACE? (relational_operators | logical_operators) WHITE_SPACE? comparison_statement
+    | NOT? OPEN_PAREN WHITE_SPACE? comparison_statement WHITE_SPACE? CLOSE_PAREN
     ;
 
 assignment_statement
-    : label white_space? EQUAL white_space? (value_comparison | string)
-    | NOT? OPEN_PAREN white_space? assignment_statement white_space? CLOSE_PAREN
+    : label WHITE_SPACE? EQUAL WHITE_SPACE? (value_comparison | string)
+    | NOT? OPEN_PAREN WHITE_SPACE? assignment_statement WHITE_SPACE? CLOSE_PAREN
     ;
 
+// add function calling Ex. factorial(n - 1)
 value_comparison
     : label
     | number
@@ -137,6 +164,7 @@ CONSTANT : 'constant' ;
 RETURN : 'return' ;
 PRINT : 'print' ;
 SCAN : 'scan' ;
+VOID : 'void' ;
 
 IF : 'if' ;
 ELSE : 'else' ;
@@ -148,7 +176,6 @@ UP_TO : 'up to' ;
 DOWN_TO : 'down to' ;
 WHILE : 'while' ;
 
-VOID : 'void' ;
 INT_DEC : 'int' ; 
 BOOLEAN_DEC : 'bool' ;
 FLOAT_DEC : 'float';
@@ -184,6 +211,7 @@ DOT : '.';
 SEMICOLON : ';' ;
 COMMA : ',' ;
 UNDERSCORE : '_' ;
+SINGLE_QUOTE : '\'' ;
     
 LOWERCASE
     : [a-z]
@@ -194,7 +222,7 @@ UPPERCASE
     ;
 
 DIGIT
-    :   [0-9]
+    : [0-9]
     ;
 
 NEWLINE
@@ -205,11 +233,16 @@ NEWLINE
     ;
 
 BLOCKCOMMENT
-    :   '/*' .*? '*/'
+    :   '/' .? '/'
         -> skip
     ;
 
 LINECOMMENT
-    :   '//' ~[\r\n]*
+    :   '//' ~[\r\n]
         -> skip
+    ;
+
+WHITE_SPACE 
+    : [ \t\r\n]+ 
+        -> skip 
     ;

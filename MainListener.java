@@ -57,26 +57,6 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitLabel(MainParser.LabelContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#white_space}.
-	 * @param ctx the parse tree
-	 */
-	void enterWhite_space(MainParser.White_spaceContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MainParser#white_space}.
-	 * @param ctx the parse tree
-	 */
-	void exitWhite_space(MainParser.White_spaceContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MainParser#simple_punctuations}.
-	 * @param ctx the parse tree
-	 */
-	void enterSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MainParser#simple_punctuations}.
-	 * @param ctx the parse tree
-	 */
-	void exitSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MainParser#first_operators}.
 	 * @param ctx the parse tree
 	 */
@@ -126,6 +106,76 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRelational_operators(MainParser.Relational_operatorsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#other_operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterOther_operators(MainParser.Other_operatorsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#other_operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitOther_operators(MainParser.Other_operatorsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#lexer_predefined_words}.
+	 * @param ctx the parse tree
+	 */
+	void enterLexer_predefined_words(MainParser.Lexer_predefined_wordsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#lexer_predefined_words}.
+	 * @param ctx the parse tree
+	 */
+	void exitLexer_predefined_words(MainParser.Lexer_predefined_wordsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#constant_words}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstant_words(MainParser.Constant_wordsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#constant_words}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstant_words(MainParser.Constant_wordsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#conditional_words}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditional_words(MainParser.Conditional_wordsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#conditional_words}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditional_words(MainParser.Conditional_wordsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#loop_words}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop_words(MainParser.Loop_wordsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#loop_words}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop_words(MainParser.Loop_wordsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#simple_punctuations}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimple_punctuations(MainParser.Simple_punctuationsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#symbol_words}.
+	 * @param ctx the parse tree
+	 */
+	void enterSymbol_words(MainParser.Symbol_wordsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#symbol_words}.
+	 * @param ctx the parse tree
+	 */
+	void exitSymbol_words(MainParser.Symbol_wordsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#any_declaration}.
 	 * @param ctx the parse tree
@@ -217,6 +267,36 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitArray_declaration_no_vartype(MainParser.Array_declaration_no_vartypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#print_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrint_statement(MainParser.Print_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#print_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrint_statement(MainParser.Print_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#value_print}.
+	 * @param ctx the parse tree
+	 */
+	void enterValue_print(MainParser.Value_printContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#value_print}.
+	 * @param ctx the parse tree
+	 */
+	void exitValue_print(MainParser.Value_printContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#extended_value_print}.
+	 * @param ctx the parse tree
+	 */
+	void enterExtended_value_print(MainParser.Extended_value_printContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#extended_value_print}.
+	 * @param ctx the parse tree
+	 */
+	void exitExtended_value_print(MainParser.Extended_value_printContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#scan_statement}.
 	 * @param ctx the parse tree
 	 */
@@ -256,6 +336,26 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConstant_declaration(MainParser.Constant_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#return_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn_statement(MainParser.Return_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#return_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn_statement(MainParser.Return_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#return_value}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn_value(MainParser.Return_valueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#return_value}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn_value(MainParser.Return_valueContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#expression}.
 	 * @param ctx the parse tree

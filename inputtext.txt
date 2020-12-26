@@ -1,1 +1,1 @@
-bool y = (5 > 4 && T) || (F && !(x==0));
+print("Thank you very much!");
