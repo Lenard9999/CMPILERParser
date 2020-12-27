@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: expression EOF;
+start: conditional_statement EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -24,6 +24,14 @@ simple_punctuations : (ASSIGN | EQUAL | SEMICOLON | DOT | COMMA | NOT | QUESTION
 symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_BRACE | CLOSE_BRACE) ;
 
 // Parsers
+statements
+    : print_statement NEWLINE*
+    | scan_statement NEWLINE*
+    | conditional_statement NEWLINE*
+    | any_declaration NEWLINE*
+    | return_statement NEWLINE*
+    ;
+
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
 any_declaration 
     : variable_declaration_vartype
@@ -37,7 +45,7 @@ assigned_expression
     ;
 
 variable_declaration_vartype
-    : variable_type WHITE_SPACE label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? SEMICOLON 
+    : variable_type WHITE_SPACE? label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? SEMICOLON 
     ;
 
 variable_declaration_no_vartype
@@ -58,7 +66,7 @@ array_assign
     ;
 
 array_declaration_vartype
-    : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE label array_assign? SEMICOLON 
+    : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE? label array_assign? SEMICOLON
     ;
 
 array_declaration_no_vartype
@@ -107,9 +115,10 @@ constant_declaration
     ;
 
 // return statement Ex. return n * factorial(n - 1); return 1; return arr_type;
+// MAY SOMETHING SA WHITE SPACE KAPAG DI NAKA QUESTION MARK SA DULO
 return_statement
-    : RETURN WHITE_SPACE return_value SEMICOLON
-    | RETURN WHITE_SPACE variable_type SEMICOLON  {notifyErrorListeners("Invalid return value");}
+    : RETURN WHITE_SPACE? return_value SEMICOLON
+    | RETURN WHITE_SPACE? variable_type SEMICOLON  {notifyErrorListeners("Invalid return value");}
     ;
 
 return_value
@@ -129,7 +138,7 @@ value_expression
     | label
     ;
 
-// comparison statement Ex. i == 0, (5 > 4 && T) || (F && !(x==0))
+// comparison statement Ex. i == 0, (5 + 4 > 4 && T) || (F && !(x==0))
 comparison_statement
     : value_comparison
     | assignment_statement
@@ -146,9 +155,46 @@ assignment_statement
 value_comparison
     : label
     | number
+    | expression
     ;
 
 // conditional statement (if else)
+/* Ex.
+    if(x == 0) then {
+        print("Hello");
+    } else if(x > 0) then {
+        print("Hello2");
+        
+        if(y + z > ((x*y)/fX)) then {
+            print("Yey!");
+        } else then {
+            print("Nay!");
+            return n+1;
+        }
+    }
+    else then {
+        print("Hello3");
+    }
+*/
+conditional_statement
+    : if_statement (WHITE_SPACE | NEWLINE)? (else_if_statement (WHITE_SPACE | NEWLINE)?)* (else_statement NEWLINE*)? 
+    ;
+
+conditional_comparison_structure
+    : OPEN_PAREN comparison_statement CLOSE_PAREN WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    ;
+
+if_statement
+    : IF conditional_comparison_structure
+    ;
+
+else_if_statement
+    : ELSE_IF conditional_comparison_structure
+    ;
+
+else_statement
+    : ELSE WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    ;
 
 // loop statement = (for | while)
 
@@ -227,17 +273,14 @@ DIGIT
     ;
 
 NEWLINE
-    :   (   '\r' '\n'?
-        |   '\n'
-        )
-        -> skip
+    : [\r\n]
     ;
 
 LINECOMMENT
-    :   '//' ~[\r\n]* NEWLINE?
+    : '//' ~[\r\n]* NEWLINE?
     ;
 
 WHITE_SPACE 
-    : [ \t\r\n]+ 
-        -> skip 
+    : [ \t\r\n]+
+        -> skip
     ;

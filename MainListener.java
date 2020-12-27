@@ -177,6 +177,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitSymbol_words(MainParser.Symbol_wordsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#statements}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatements(MainParser.StatementsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#statements}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatements(MainParser.StatementsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#any_declaration}.
 	 * @param ctx the parse tree
 	 */
@@ -406,4 +416,54 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValue_comparison(MainParser.Value_comparisonContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#conditional_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditional_statement(MainParser.Conditional_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#conditional_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditional_statement(MainParser.Conditional_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#conditional_comparison_structure}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditional_comparison_structure(MainParser.Conditional_comparison_structureContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#conditional_comparison_structure}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditional_comparison_structure(MainParser.Conditional_comparison_structureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#if_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_statement(MainParser.If_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#if_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_statement(MainParser.If_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#else_if_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElse_if_statement(MainParser.Else_if_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#else_if_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElse_if_statement(MainParser.Else_if_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#else_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElse_statement(MainParser.Else_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#else_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElse_statement(MainParser.Else_statementContext ctx);
 }
