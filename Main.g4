@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: loop_statement EOF;
+start: statements EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -25,12 +25,12 @@ symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_B
 
 // Parsers
 statements
-    : print_statement NEWLINE*
-    | scan_statement NEWLINE*
-    | conditional_statement NEWLINE*
-    | any_declaration NEWLINE*
-    | return_statement NEWLINE*
-    | loop_statement NEWLINE*
+    : print_statement LINECOMMENT? NEWLINE*
+    | scan_statement LINECOMMENT? NEWLINE*
+    | conditional_statement LINECOMMENT? NEWLINE*
+    | any_declaration LINECOMMENT? NEWLINE*
+    | return_statement LINECOMMENT? NEWLINE*
+    | loop_statement LINECOMMENT? NEWLINE*
     ;
 
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
