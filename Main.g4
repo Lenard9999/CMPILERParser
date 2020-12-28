@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: conditional_statement EOF;
+start: any_declaration EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -62,7 +62,7 @@ array_variable
 
 array_assign
     : WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE array_size CLOSE_BRACE
-    | WHITE_SPACE? ASSIGN WHITE_SPACE? array_variable
+    | WHITE_SPACE? ASSIGN WHITE_SPACE? (array_variable | assigned_expression)
     ;
 
 array_declaration_vartype
@@ -70,7 +70,7 @@ array_declaration_vartype
     ;
 
 array_declaration_no_vartype
-    : array_variable WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE? WHITE_SPACE? (assigned_expression | array_variable) SEMICOLON
+    : array_variable array_assign SEMICOLON
     ;
  
 // print statement
@@ -111,7 +111,7 @@ value_parameter
 
 // constant declaration Ex. constant int MY_CONSTANT = 500;
 constant_declaration 
-    : CONSTANT WHITE_SPACE any_declaration
+    : CONSTANT WHITE_SPACE? any_declaration
     ;
 
 // return statement Ex. return n * factorial(n - 1); return 1; return arr_type;
