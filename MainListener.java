@@ -466,4 +466,64 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitElse_statement(MainParser.Else_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#loop_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop_statement(MainParser.Loop_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#loop_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop_statement(MainParser.Loop_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#loop_structure}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop_structure(MainParser.Loop_structureContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#loop_structure}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop_structure(MainParser.Loop_structureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#loop_variable_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop_variable_declaration(MainParser.Loop_variable_declarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#loop_variable_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop_variable_declaration(MainParser.Loop_variable_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#loop_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop_expression(MainParser.Loop_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#loop_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop_expression(MainParser.Loop_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#while_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhile_statement(MainParser.While_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#while_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhile_statement(MainParser.While_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#for_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor_statement(MainParser.For_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#for_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor_statement(MainParser.For_statementContext ctx);
 }

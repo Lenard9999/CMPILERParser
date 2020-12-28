@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: any_declaration EOF;
+start: loop_statement EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -30,6 +30,7 @@ statements
     | conditional_statement NEWLINE*
     | any_declaration NEWLINE*
     | return_statement NEWLINE*
+    | loop_statement NEWLINE*
     ;
 
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
@@ -158,7 +159,7 @@ value_comparison
     | expression
     ;
 
-// conditional statement (if else)
+// conditional statement (if else-if else)
 /* Ex.
     if(x == 0) then {
         print("Hello");
@@ -197,6 +198,52 @@ else_statement
     ;
 
 // loop statement = (for | while)
+/* Ex.
+    while i up to n - 1 {
+        print("Yesh!");
+    }
+
+    while i down to n - 1 {
+        print("Yesh!");
+    }
+
+    for int x = 1000 up to n {
+        print("Hello!");
+    }
+
+    for int x = 1000 down to n {
+        print("Hello!");
+    }
+
+    for i up to n {
+        print("Hello!");
+    }
+*/
+loop_statement
+    : for_statement
+    | while_statement
+    ;
+
+loop_structure
+    : (UP_TO | DOWN_TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    ;
+
+loop_variable_declaration
+    : (variable_type WHITE_SPACE)? label WHITE_SPACE? ASSIGN WHITE_SPACE? loop_expression 
+    | expression
+    ;
+
+loop_expression
+    : (number | label | expression)
+    ;
+
+while_statement
+    : WHILE WHITE_SPACE? expression WHITE_SPACE? loop_structure
+    ;
+
+for_statement
+    : FOR WHITE_SPACE? loop_variable_declaration WHITE_SPACE? loop_structure
+    ;
 
 // function calling = (void | non void | print statement | scan statement)
 

@@ -1,1 +1,7 @@
-newArr[arr_size + 1] = 1;
+for int x = 1000 down to n {
+    print("Hello!");
+
+    for int x = 1000 down to n {
+        print("Hello!");
+    }
+}
