@@ -88,7 +88,7 @@ print_statement
     ;
 
 value_print
-    : string WHITE_SPACE? (PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
+    : extended_value_print WHITE_SPACE? (PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
     ;
 
 extended_value_print
@@ -245,7 +245,8 @@ for_statement
     : FOR WHITE_SPACE? loop_variable_declaration WHITE_SPACE? loop_structure
     ;
 
-// function calling = (void | non void | print statement | scan statement)
+// function calling = (void | non void)
+// Ex. testOne(); testOne(x+1); testOne(testOne(x+1));
 
 // function declaration = (void | non void)
 

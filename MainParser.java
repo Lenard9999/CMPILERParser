@@ -2255,8 +2255,11 @@ public class MainParser extends Parser {
 	}
 
 	public static class Value_printContext extends ParserRuleContext {
-		public StringContext string() {
-			return getRuleContext(StringContext.class,0);
+		public List<Extended_value_printContext> extended_value_print() {
+			return getRuleContexts(Extended_value_printContext.class);
+		}
+		public Extended_value_printContext extended_value_print(int i) {
+			return getRuleContext(Extended_value_printContext.class,i);
 		}
 		public List<TerminalNode> WHITE_SPACE() { return getTokens(MainParser.WHITE_SPACE); }
 		public TerminalNode WHITE_SPACE(int i) {
@@ -2265,12 +2268,6 @@ public class MainParser extends Parser {
 		public List<TerminalNode> PLUS() { return getTokens(MainParser.PLUS); }
 		public TerminalNode PLUS(int i) {
 			return getToken(MainParser.PLUS, i);
-		}
-		public List<Extended_value_printContext> extended_value_print() {
-			return getRuleContexts(Extended_value_printContext.class);
-		}
-		public Extended_value_printContext extended_value_print(int i) {
-			return getRuleContext(Extended_value_printContext.class,i);
 		}
 		public Value_printContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2294,7 +2291,7 @@ public class MainParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(350);
-			string();
+			extended_value_print();
 			setState(352);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -4594,7 +4591,7 @@ public class MainParser extends Parser {
 		"\65\3\2\2\2\u0156\u0157\5\60\31\2\u0157\u0158\5\62\32\2\u0158\u0159\7"+
 		".\2\2\u0159\67\3\2\2\2\u015a\u015b\7\b\2\2\u015b\u015c\7\27\2\2\u015c"+
 		"\u015d\5:\36\2\u015d\u015e\7\30\2\2\u015e\u015f\7.\2\2\u015f9\3\2\2\2"+
-		"\u0160\u0162\5\6\4\2\u0161\u0163\7\67\2\2\u0162\u0161\3\2\2\2\u0162\u0163"+
+		"\u0160\u0162\5<\37\2\u0161\u0163\7\67\2\2\u0162\u0161\3\2\2\2\u0162\u0163"+
 		"\3\2\2\2\u0163\u016e\3\2\2\2\u0164\u0166\7!\2\2\u0165\u0167\7\67\2\2\u0166"+
 		"\u0165\3\2\2\2\u0166\u0167\3\2\2\2\u0167\u0168\3\2\2\2\u0168\u016a\5<"+
 		"\37\2\u0169\u016b\7\67\2\2\u016a\u0169\3\2\2\2\u016a\u016b\3\2\2\2\u016b"+
