@@ -149,7 +149,7 @@ comparison_statement
 
 assignment_statement
     : label WHITE_SPACE? EQUAL WHITE_SPACE? (value_comparison | string)
-    | NOT? OPEN_PAREN WHITE_SPACE? assignment_statement WHITE_SPACE? CLOSE_PAREN
+    | label WHITE_SPACE? ASSIGN WHITE_SPACE? (value_comparison | string) {notifyErrorListeners("Invalid comparison symbol '=', should be '=='");}
     ;
 
 // add function calling Ex. factorial(n - 1)
@@ -226,6 +226,7 @@ loop_statement
 
 loop_structure
     : (UP_TO | DOWN_TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    | label WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET {notifyErrorListeners("Missing assignment operator");}
     ;
 
 loop_variable_declaration
@@ -239,10 +240,12 @@ loop_expression
 
 while_statement
     : WHILE WHITE_SPACE? expression WHITE_SPACE? loop_structure
+    | WHITE_SPACE? expression WHITE_SPACE? loop_structure {notifyErrorListeners("Missing While or For word");}
     ;
 
 for_statement
     : FOR WHITE_SPACE? loop_variable_declaration WHITE_SPACE? loop_structure
+    | WHITE_SPACE? loop_variable_declaration WHITE_SPACE? loop_structure {notifyErrorListeners("Missing While or For word");}
     ;
 
 // function calling = (void | non void)

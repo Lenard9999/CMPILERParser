@@ -1,1 +1,3 @@
-print(message); // HELLO PEOPLE
+i up to n - 1 {
+    print("Yesh!");
+}
