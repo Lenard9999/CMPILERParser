@@ -1,11 +1,11 @@
 grammar Main;	
 // Starting Node	
-start: statements EOF;
+start: any_declaration EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
 number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
-label : variable_type* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ variable_type* label*; // WEIRD YUN f and BAWAL same name sa variable types yun label
+label : (constant_words | conditional_words | loop_words)* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ (constant_words | conditional_words | loop_words)* label*;
 
 // Operators
 first_operators : (MULTI | DIV | MOD) ;
@@ -63,7 +63,10 @@ array_variable
 
 array_assign
     : WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE array_size CLOSE_BRACE
+    | WHITE_SPACE? EQUAL WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE array_size CLOSE_BRACE {notifyErrorListeners("Invalid symbol '==' for declaration");}
+    | WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE? array_size CLOSE_BRACE? {notifyErrorListeners("Missing brace for array declaration");}
     | WHITE_SPACE? ASSIGN WHITE_SPACE? (array_variable | assigned_expression)
+    | WHITE_SPACE? EQUAL WHITE_SPACE? (array_variable | assigned_expression) {notifyErrorListeners("Invalid symbol '==' for declaration");}
     ;
 
 array_declaration_vartype
@@ -143,7 +146,8 @@ value_expression
 comparison_statement
     : value_comparison
     | assignment_statement
-    | comparison_statement WHITE_SPACE? (relational_operators | logical_operators) WHITE_SPACE? comparison_statement
+    | comparison_statement WHITE_SPACE? (other_operators) WHITE_SPACE? comparison_statement
+    | comparison_statement WHITE_SPACE? (other_operators other_operators+) WHITE_SPACE? comparison_statement {notifyErrorListeners("Multiple operators");}
     | NOT? OPEN_PAREN WHITE_SPACE? comparison_statement WHITE_SPACE? CLOSE_PAREN
     ;
 
