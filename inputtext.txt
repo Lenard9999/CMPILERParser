@@ -1,1 +1,1 @@
-int[] x == create int[arr + 1];
+print("Thank you very much!" +testOne());

@@ -526,4 +526,44 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFor_statement(MainParser.For_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_calling}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_calling(MainParser.Function_callingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_calling}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_calling(MainParser.Function_callingContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_calling_without_semicolon}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_calling_without_semicolon(MainParser.Function_calling_without_semicolonContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_calling_without_semicolon}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_calling_without_semicolon(MainParser.Function_calling_without_semicolonContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_parameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_parameters(MainParser.Function_parametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_parameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_parameters(MainParser.Function_parametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_paremeters_value}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_paremeters_value(MainParser.Function_paremeters_valueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_paremeters_value}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_paremeters_value(MainParser.Function_paremeters_valueContext ctx);
 }

@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: any_declaration EOF;
+start: print_statement EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -42,7 +42,7 @@ any_declaration
     ; 
 
 assigned_expression
-    : (string | number | label | expression | comparison_statement) 
+    : (string | number | label | expression | comparison_statement | function_calling_without_semicolon) 
     ;
 
 variable_declaration_vartype
@@ -91,13 +91,14 @@ print_statement
     ;
 
 value_print
-    : extended_value_print WHITE_SPACE? (PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
+    : extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
     ;
 
 extended_value_print
     : string
     | label
     | expression
+    | function_calling_without_semicolon
     ;
 
 // scan statement Ex. scan("Give me a random number: ", i+1); 
@@ -119,14 +120,13 @@ constant_declaration
     ;
 
 // return statement Ex. return n * factorial(n - 1); return 1; return arr_type;
-// MAY SOMETHING SA WHITE SPACE KAPAG DI NAKA QUESTION MARK SA DULO
 return_statement
     : RETURN WHITE_SPACE? return_value SEMICOLON
     | RETURN WHITE_SPACE? variable_type SEMICOLON  {notifyErrorListeners("Invalid return value");}
     ;
 
 return_value
-    : (string | number | label | expression)
+    : (string | number | label | expression | function_calling)
     ;
 
 // arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100, (x * 50) * (x * 15)
@@ -140,6 +140,7 @@ expression
 value_expression
     : number
     | label
+    | function_calling_without_semicolon
     ;
 
 // comparison statement Ex. i == 0, (5 + 4 > 4 && T) || (F && !(x==0))
@@ -253,7 +254,22 @@ for_statement
     ;
 
 // function calling = (void | non void)
-// Ex. testOne(); testOne(x+1); testOne(testOne(x+1));
+// Ex. testOne(testOne(),x+1,"strfe",3,testOne(x+1));
+function_calling
+    : label OPEN_PAREN function_parameters* CLOSE_PAREN SEMICOLON
+    ;
+
+function_calling_without_semicolon
+    : label OPEN_PAREN function_parameters* CLOSE_PAREN
+    ;
+
+function_parameters
+    : function_paremeters_value (WHITE_SPACE? COMMA WHITE_SPACE? function_paremeters_value)*
+    ;
+
+function_paremeters_value
+    : (label | expression | string | number | function_calling_without_semicolon)
+    ;
 
 // function declaration = (void | non void)
 
