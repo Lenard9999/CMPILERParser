@@ -1,1 +1,10 @@
-print("Thank you very much!" +testOne());
+func int[] append(int[] arr, int arr_size, int x) {
+    int[] newArr = create int[arr_size + 1];
+    
+    for i = 1 up to arr_size {
+        newArr[i] = arr[i];
+    }
+    
+    newArr[arr_size + 1] = x;
+    return newArr;
+}

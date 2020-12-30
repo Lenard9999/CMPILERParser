@@ -57,6 +57,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitLabel(MainParser.LabelContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#label_words}.
+	 * @param ctx the parse tree
+	 */
+	void enterLabel_words(MainParser.Label_wordsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#label_words}.
+	 * @param ctx the parse tree
+	 */
+	void exitLabel_words(MainParser.Label_wordsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#first_operators}.
 	 * @param ctx the parse tree
 	 */
@@ -566,4 +576,54 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunction_paremeters_value(MainParser.Function_paremeters_valueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_declaration(MainParser.Function_declarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_declaration(MainParser.Function_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_structure}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_structure(MainParser.Function_structureContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_structure}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_structure(MainParser.Function_structureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_declaration_parameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_declaration_parameters(MainParser.Function_declaration_parametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_declaration_parameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_declaration_parameters(MainParser.Function_declaration_parametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#void_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterVoid_function(MainParser.Void_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#void_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitVoid_function(MainParser.Void_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#non_void_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterNon_void_function(MainParser.Non_void_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#non_void_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitNon_void_function(MainParser.Non_void_functionContext ctx);
 }

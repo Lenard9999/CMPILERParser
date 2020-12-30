@@ -1,11 +1,12 @@
 grammar Main;	
 // Starting Node	
-start: print_statement EOF;
+start: function_declaration EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
 number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
-label : (constant_words | conditional_words | loop_words)* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ (constant_words | conditional_words | loop_words)* label*;
+label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ label_words* label*;
+label_words : (constant_words | conditional_words | loop_words | variable_type) ;
 
 // Operators
 first_operators : (MULTI | DIV | MOD) ;
@@ -17,7 +18,7 @@ other_operators : (logical_operators | relational_operators) ;
 
 // need for masama yun mga lexer predefined words
 lexer_predefined_words : (constant_words | conditional_words | loop_words | simple_punctuations | symbol_words | other_operators | operators | variable_type) ;
-constant_words : (CREATE | CONSTANT | RETURN | PRINT | SCAN | VOID) ;
+constant_words : (CREATE | CONSTANT | RETURN | PRINT | SCAN | VOID| FUNC) ;
 conditional_words : (IF | ELSE | ELSE_IF | THEN) ;
 loop_words : (FOR | UP_TO | DOWN_TO | WHILE) ;
 simple_punctuations : (ASSIGN | EQUAL | SEMICOLON | DOT | COMMA | NOT | QUESTION | COLON | UNDERSCORE | SINGLE_QUOTE) ;
@@ -256,11 +257,11 @@ for_statement
 // function calling = (void | non void)
 // Ex. testOne(testOne(),x+1,"strfe",3,testOne(x+1));
 function_calling
-    : label OPEN_PAREN function_parameters* CLOSE_PAREN SEMICOLON
+    : label OPEN_PAREN function_parameters? CLOSE_PAREN SEMICOLON
     ;
 
 function_calling_without_semicolon
-    : label OPEN_PAREN function_parameters* CLOSE_PAREN
+    : label OPEN_PAREN function_parameters? CLOSE_PAREN
     ;
 
 function_parameters
@@ -268,10 +269,54 @@ function_parameters
     ;
 
 function_paremeters_value
-    : (label | expression | string | number | function_calling_without_semicolon)
+    : (function_calling_without_semicolon | label | expression | string | number)
     ;
 
 // function declaration = (void | non void)
+/* Ex.
+    func int factorial(int n) {
+        if(n == 1) then {
+            return 1;
+        }
+        else then {
+            return n * factorial(n - 1);
+        }
+    }
+    func void callPrinter(String message) {
+        print(message);
+    }
+
+    func int[] append(int[] arr, int arr_size, int x) {
+        int[] newArr = create int[arr_size + 1];
+        
+        for i = 1 up to arr_size {
+            newArr[i] = arr[i];
+        }
+        
+        newArr[arr_size + 1] = x;
+        return newArr;
+    }
+*/
+function_declaration
+    : void_function
+    | non_void_function
+    ;
+
+function_structure
+    : label OPEN_PAREN function_declaration_parameters? CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    ;
+
+function_declaration_parameters
+    : variable_type (OPEN_BRACE CLOSE_BRACE)? label (COMMA WHITE_SPACE? function_declaration_parameters)*
+    ;
+
+void_function
+    : FUNC WHITE_SPACE? VOID function_structure
+    ;
+
+non_void_function
+    : FUNC WHITE_SPACE? variable_type (OPEN_BRACE CLOSE_BRACE)? function_structure
+    ;
 
 // main function 
 
@@ -283,6 +328,7 @@ RETURN : 'return' ;
 PRINT : 'print' ;
 SCAN : 'scan' ;
 VOID : 'void' ;
+FUNC : 'func' ;
 
 IF : 'if' ;
 ELSE : 'else' ;
