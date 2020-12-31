@@ -626,4 +626,14 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNon_void_function(MainParser.Non_void_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#scoping_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterScoping_statement(MainParser.Scoping_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#scoping_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitScoping_statement(MainParser.Scoping_statementContext ctx);
 }

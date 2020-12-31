@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: function_declaration EOF;
+start: scoping_statement EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -32,6 +32,7 @@ statements
     | any_declaration LINECOMMENT? NEWLINE*
     | return_statement LINECOMMENT? NEWLINE*
     | loop_statement LINECOMMENT? NEWLINE*
+    | scoping_statement LINECOMMENT? NEWLINE*
     ;
 
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
@@ -316,6 +317,31 @@ void_function
 
 non_void_function
     : FUNC WHITE_SPACE? variable_type (OPEN_BRACE CLOSE_BRACE)? function_structure
+    ;
+
+// proper scoping
+/* Ex.
+	{
+		print(a); //a can be accessed
+		{
+			int b = 0;
+			print(b);
+			
+			{
+				int c = 0;
+				print(b + c); //c and b can be accessed.
+				print(a + c); //even a can be accessed
+			}
+			
+			print("Cannot access c here!");
+		}
+		
+		print("Cannot access b here!");
+		print("Cannot access c here!");
+	}
+*/
+scoping_statement
+    : OPEN_BRACKET NEWLINE? statements+ NEWLINE? CLOSE_BRACKET
     ;
 
 // main function 

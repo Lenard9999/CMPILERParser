@@ -1,10 +1,18 @@
-func int[] append(int[] arr, int arr_size, int x) {
-    int[] newArr = create int[arr_size + 1];
-    
-    for i = 1 up to arr_size {
-        newArr[i] = arr[i];
+{
+    print(a); //a can be accessed
+    {
+        int b = 0;
+        print(b);
+        
+        {
+            int c = 0;
+            print(b + c); //c and b can be accessed.
+            print(a + c); //even a can be accessed
+        }
+        
+        print("Cannot access c here!");
     }
     
-    newArr[arr_size + 1] = x;
-    return newArr;
+    print("Cannot access b here!");
+    print("Cannot access c here!");
 }
