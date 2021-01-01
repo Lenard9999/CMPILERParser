@@ -1,6 +1,7 @@
 grammar Main;	
 // Starting Node	
 start: function_declaration* main_function EOF;
+// start: loop_statement EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -20,7 +21,7 @@ other_operators : (logical_operators | relational_operators) ;
 lexer_predefined_words : (constant_words | conditional_words | loop_words | simple_punctuations | symbol_words | other_operators | operators | variable_type) ;
 constant_words : (CREATE | CONSTANT | RETURN | PRINT | SCAN | VOID| FUNC | MAIN) ;
 conditional_words : (IF | ELSE | ELSE_IF | THEN) ;
-loop_words : (FOR | UP_TO | DOWN_TO | WHILE) ;
+loop_words : (FOR | UP_TO | DOWN_TO | TO | WHILE) ;
 simple_punctuations : (ASSIGN | EQUAL | SEMICOLON | DOT | COMMA | NOT | QUESTION | COLON | UNDERSCORE | SINGLE_QUOTE) ;
 symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_BRACE | CLOSE_BRACE) ;
 
@@ -130,7 +131,7 @@ return_statement
     ;
 
 return_value
-    : (string | number | label | expression | function_calling)
+    : (string | number | label | expression | function_calling_without_semicolon)
     ;
 
 // arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100, (x * 50) * (x * 15)
@@ -229,17 +230,18 @@ else_statement
     }
 */
 loop_statement
-    : for_statement
-    | while_statement
+    : while_statement
+    | for_statement
     ;
 
 loop_structure
-    : (UP_TO | DOWN_TO | 'to') WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    : (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
     ;
 
 loop_variable_declaration
     : (variable_type WHITE_SPACE)? label WHITE_SPACE? ASSIGN WHITE_SPACE? loop_expression 
-    | (variable_type WHITE_SPACE)? label {notifyErrorListeners("Missing assignment operator");}
+    | variable_type WHITE_SPACE label {notifyErrorListeners("Missing assignment operator");}
+    | expression
     ;
 
 loop_expression
@@ -248,12 +250,10 @@ loop_expression
 
 while_statement
     : WHILE WHITE_SPACE? expression WHITE_SPACE? loop_structure
-    | WHITE_SPACE? expression WHITE_SPACE? loop_structure {notifyErrorListeners("Missing While or For word");}
     ;
 
 for_statement
     : FOR WHITE_SPACE? loop_variable_declaration WHITE_SPACE? loop_structure
-    | WHITE_SPACE? loop_variable_declaration WHITE_SPACE? loop_structure {notifyErrorListeners("Missing While or For word");}
     ;
 
 // function calling = (void | non void)
@@ -368,6 +368,7 @@ THEN : 'then' ;
 FOR : 'for' ;
 UP_TO : 'up to' ;
 DOWN_TO : 'down to' ;
+TO : 'to' ;
 WHILE : 'while' ;
 
 INT_DEC : 'int' ; 
