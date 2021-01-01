@@ -1,12 +1,12 @@
 grammar Main;	
 // Starting Node	
-start: scoping_statement EOF;
+start: function_declaration* main_function EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
 number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
 label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ label_words* label*;
-label_words : (constant_words | conditional_words | loop_words | variable_type) ;
+label_words : (constant_words | conditional_words | loop_words | variable_type | DIGIT) ;
 
 // Operators
 first_operators : (MULTI | DIV | MOD) ;
@@ -18,7 +18,7 @@ other_operators : (logical_operators | relational_operators) ;
 
 // need for masama yun mga lexer predefined words
 lexer_predefined_words : (constant_words | conditional_words | loop_words | simple_punctuations | symbol_words | other_operators | operators | variable_type) ;
-constant_words : (CREATE | CONSTANT | RETURN | PRINT | SCAN | VOID| FUNC) ;
+constant_words : (CREATE | CONSTANT | RETURN | PRINT | SCAN | VOID| FUNC | MAIN) ;
 conditional_words : (IF | ELSE | ELSE_IF | THEN) ;
 loop_words : (FOR | UP_TO | DOWN_TO | WHILE) ;
 simple_punctuations : (ASSIGN | EQUAL | SEMICOLON | DOT | COMMA | NOT | QUESTION | COLON | UNDERSCORE | SINGLE_QUOTE) ;
@@ -33,6 +33,7 @@ statements
     | return_statement LINECOMMENT? NEWLINE*
     | loop_statement LINECOMMENT? NEWLINE*
     | scoping_statement LINECOMMENT? NEWLINE*
+    | function_calling LINECOMMENT? NEWLINE*
     ;
 
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
@@ -94,6 +95,7 @@ print_statement
 
 value_print
     : extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
+    | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)* PLUS+ {notifyErrorListeners("additional ‘+’ sign at end of print");}
     ;
 
 extended_value_print
@@ -232,13 +234,12 @@ loop_statement
     ;
 
 loop_structure
-    : (UP_TO | DOWN_TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
-    | label WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET {notifyErrorListeners("Missing assignment operator");}
+    : (UP_TO | DOWN_TO | 'to') WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
     ;
 
 loop_variable_declaration
     : (variable_type WHITE_SPACE)? label WHITE_SPACE? ASSIGN WHITE_SPACE? loop_expression 
-    | expression
+    | (variable_type WHITE_SPACE)? label {notifyErrorListeners("Missing assignment operator");}
     ;
 
 loop_expression
@@ -304,7 +305,7 @@ function_declaration
     ;
 
 function_structure
-    : label OPEN_PAREN function_declaration_parameters? CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    : label OPEN_PAREN function_declaration_parameters? CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET NEWLINE*
     ;
 
 function_declaration_parameters
@@ -345,7 +346,9 @@ scoping_statement
     ;
 
 // main function 
-
+main_function
+    : MAIN OPEN_PAREN CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET statements+ CLOSE_BRACKET NEWLINE*
+    ;
 
 // Lexers
 CREATE : 'create' ;
@@ -355,6 +358,7 @@ PRINT : 'print' ;
 SCAN : 'scan' ;
 VOID : 'void' ;
 FUNC : 'func' ;
+MAIN : 'main' ;
 
 IF : 'if' ;
 ELSE : 'else' ;
