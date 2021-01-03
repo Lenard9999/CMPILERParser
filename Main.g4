@@ -1,7 +1,7 @@
 grammar Main;	
 // Starting Node	
-start: function_declaration* main_function NEWLINE? EOF;
-// start: loop_statement EOF;
+start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE? EOF;
+// start: statements EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -27,15 +27,16 @@ symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_B
 
 // Parsers
 statements
-    : conditional_statement LINECOMMENT? NEWLINE*
-    | loop_statement LINECOMMENT? NEWLINE*
-    | print_statement LINECOMMENT? NEWLINE*
-    | scan_statement LINECOMMENT? NEWLINE*
-    | any_declaration SEMICOLON LINECOMMENT? NEWLINE*
-    | any_declaration LINECOMMENT? NEWLINE* {notifyErrorListeners("Missing semicolon");}
-    | return_statement LINECOMMENT? NEWLINE*
-    | scoping_statement LINECOMMENT? NEWLINE*
-    | function_calling LINECOMMENT? NEWLINE*
+    : conditional_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | loop_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | print_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | scan_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | return_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | constant_declaration SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | any_declaration SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | any_declaration WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE* {notifyErrorListeners("Missing semicolon");}
+    | scoping_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | function_calling WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
     ;
 
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
@@ -122,12 +123,12 @@ value_parameter
 
 // constant declaration Ex. constant int MY_CONSTANT = 500;
 constant_declaration 
-    : CONSTANT WHITE_SPACE? any_declaration
+    : CONSTANT WHITE_SPACE any_declaration
     ;
 
 // return statement Ex. return n * factorial(n - 1); return 1; return arr_type;
 return_statement
-    : RETURN WHITE_SPACE? return_value SEMICOLON
+    : RETURN WHITE_SPACE return_value SEMICOLON
     | RETURN WHITE_SPACE? variable_type SEMICOLON  {notifyErrorListeners("Invalid return value");}
     ;
 
@@ -194,7 +195,7 @@ conditional_statement
     ;
 
 conditional_comparison_structure
-    : OPEN_PAREN comparison_statement CLOSE_PAREN WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    : OPEN_PAREN comparison_statement CLOSE_PAREN WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
     ;
 
 if_statement
@@ -206,7 +207,7 @@ else_if_statement
     ;
 
 else_statement
-    : ELSE WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    : ELSE WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
     ;
 
 // loop statement = (for | while)
@@ -237,7 +238,7 @@ loop_statement
     ;
 
 loop_structure
-    : (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET
+    : (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
     ;
 
 loop_variable_declaration
@@ -307,19 +308,19 @@ function_declaration
     ;
 
 function_structure
-    : label OPEN_PAREN function_declaration_parameters? CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET NEWLINE? statements+ CLOSE_BRACKET NEWLINE*
+    : label OPEN_PAREN function_declaration_parameters? CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET NEWLINE*
     ;
 
 function_declaration_parameters
-    : variable_type (OPEN_BRACE CLOSE_BRACE)? label (COMMA WHITE_SPACE? function_declaration_parameters)*
+    : variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label (COMMA WHITE_SPACE? function_declaration_parameters)*
     ;
 
 void_function
-    : FUNC WHITE_SPACE? VOID function_structure
+    : FUNC WHITE_SPACE? VOID WHITE_SPACE function_structure
     ;
 
 non_void_function
-    : FUNC WHITE_SPACE? variable_type (OPEN_BRACE CLOSE_BRACE)? function_structure
+    : FUNC WHITE_SPACE? variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE function_structure
     ;
 
 // proper scoping
@@ -344,12 +345,12 @@ non_void_function
 	}
 */
 scoping_statement
-    : OPEN_BRACKET NEWLINE? statements+ NEWLINE? CLOSE_BRACKET
+    : OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
     ;
 
 // main function 
 main_function
-    : MAIN OPEN_PAREN CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET statements+ CLOSE_BRACKET NEWLINE*
+    : MAIN OPEN_PAREN CLOSE_PAREN WHITE_SPACE* OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET NEWLINE*
     ;
 
 // Lexers
@@ -432,5 +433,4 @@ LINECOMMENT
 
 WHITE_SPACE 
     : [ \t\r\n]+
-        -> skip
     ;
