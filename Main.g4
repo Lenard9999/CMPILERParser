@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: function_declaration* main_function EOF;
+start: function_declaration* main_function NEWLINE? EOF;
 // start: loop_statement EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
@@ -27,12 +27,13 @@ symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_B
 
 // Parsers
 statements
-    : print_statement LINECOMMENT? NEWLINE*
-    | scan_statement LINECOMMENT? NEWLINE*
-    | conditional_statement LINECOMMENT? NEWLINE*
-    | any_declaration LINECOMMENT? NEWLINE*
-    | return_statement LINECOMMENT? NEWLINE*
+    : conditional_statement LINECOMMENT? NEWLINE*
     | loop_statement LINECOMMENT? NEWLINE*
+    | print_statement LINECOMMENT? NEWLINE*
+    | scan_statement LINECOMMENT? NEWLINE*
+    | any_declaration SEMICOLON LINECOMMENT? NEWLINE*
+    | any_declaration LINECOMMENT? NEWLINE* {notifyErrorListeners("Missing semicolon");}
+    | return_statement LINECOMMENT? NEWLINE*
     | scoping_statement LINECOMMENT? NEWLINE*
     | function_calling LINECOMMENT? NEWLINE*
     ;
@@ -50,11 +51,11 @@ assigned_expression
     ;
 
 variable_declaration_vartype
-    : variable_type WHITE_SPACE? label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? SEMICOLON 
+    : variable_type WHITE_SPACE? label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? 
     ;
 
 variable_declaration_no_vartype
-    : label WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression SEMICOLON 
+    : label WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression 
     ;
 
 array_size 
@@ -74,11 +75,11 @@ array_assign
     ;
 
 array_declaration_vartype
-    : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE? label array_assign? SEMICOLON
+    : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE? label array_assign?
     ;
 
 array_declaration_no_vartype
-    : array_variable array_assign SEMICOLON
+    : array_variable array_assign
     ;
  
 // print statement
@@ -140,6 +141,7 @@ expression
     | expression WHITE_SPACE? (operators) WHITE_SPACE? expression
     | expression WHITE_SPACE? (operators operators+) WHITE_SPACE? expression {notifyErrorListeners("Multiple operators");}
     | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
+    | OPEN_PAREN+ WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Multiple parenthesis");}
     ;
 
 value_expression
