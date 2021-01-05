@@ -547,16 +547,6 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitFunction_calling(MainParser.Function_callingContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MainParser#function_calling_without_semicolon}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunction_calling_without_semicolon(MainParser.Function_calling_without_semicolonContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MainParser#function_calling_without_semicolon}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunction_calling_without_semicolon(MainParser.Function_calling_without_semicolonContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MainParser#function_parameters}.
 	 * @param ctx the parse tree
 	 */

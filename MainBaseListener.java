@@ -663,18 +663,6 @@ public class MainBaseListener implements MainListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunction_calling_without_semicolon(MainParser.Function_calling_without_semicolonContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunction_calling_without_semicolon(MainParser.Function_calling_without_semicolonContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunction_parameters(MainParser.Function_parametersContext ctx) { }
 	/**
 	 * {@inheritDoc}

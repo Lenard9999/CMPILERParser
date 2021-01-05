@@ -1,6 +1,6 @@
 grammar Main;	
 // Starting Node	
-start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE? EOF;
+start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE* WHITE_SPACE* EOF;
 // start: statements EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
@@ -29,14 +29,18 @@ symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_B
 statements
     : conditional_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
     | loop_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
-    | print_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
-    | scan_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
-    | return_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
-    | constant_declaration SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | print_statement SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | print_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE* {notifyErrorListeners("Missing semicolon");}
+    | scan_statement SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | scan_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE* {notifyErrorListeners("Missing semicolon");}
+    | return_statement SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | return_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE* {notifyErrorListeners("Missing semicolon");}
+    | constant_declaration WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
     | any_declaration SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
     | any_declaration WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE* {notifyErrorListeners("Missing semicolon");}
     | scoping_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
-    | function_calling WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | function_calling SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
+    | function_calling WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE* {notifyErrorListeners("Missing semicolon");}
     ;
 
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
@@ -48,11 +52,11 @@ any_declaration
     ; 
 
 assigned_expression
-    : (string | number | label | expression | comparison_statement | function_calling_without_semicolon) 
+    : (string | number | label | expression | comparison_statement | function_calling) 
     ;
 
 variable_declaration_vartype
-    : variable_type WHITE_SPACE? label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? 
+    : variable_type WHITE_SPACE label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? 
     ;
 
 variable_declaration_no_vartype
@@ -76,7 +80,7 @@ array_assign
     ;
 
 array_declaration_vartype
-    : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE? label array_assign?
+    : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE label array_assign?
     ;
 
 array_declaration_no_vartype
@@ -93,11 +97,12 @@ print("Let's do something complicated! " +((x + y + z) * (x*y)/fX));
 print("Thank you very much!");
 */
 print_statement
-    : PRINT OPEN_PAREN value_print CLOSE_PAREN SEMICOLON
+    : PRINT OPEN_PAREN value_print CLOSE_PAREN
     ;
 
 value_print
     : extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
+    | label (WHITE_SPACE label)+ {notifyErrorListeners("No double quotes");}
     | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)* PLUS+ {notifyErrorListeners("additional ‘+’ sign at end of print");}
     ;
 
@@ -105,12 +110,12 @@ extended_value_print
     : string
     | label
     | expression
-    | function_calling_without_semicolon
+    | function_calling
     ;
 
 // scan statement Ex. scan("Give me a random number: ", i+1); 
 scan_statement
-    : SCAN OPEN_PAREN display_message_parameter WHITE_SPACE? COMMA WHITE_SPACE? value_parameter CLOSE_PAREN SEMICOLON
+    : SCAN OPEN_PAREN display_message_parameter WHITE_SPACE? COMMA WHITE_SPACE? value_parameter CLOSE_PAREN
     ;
 
 display_message_parameter 
@@ -128,12 +133,13 @@ constant_declaration
 
 // return statement Ex. return n * factorial(n - 1); return 1; return arr_type;
 return_statement
-    : RETURN WHITE_SPACE return_value SEMICOLON
-    | RETURN WHITE_SPACE? variable_type SEMICOLON  {notifyErrorListeners("Invalid return value");}
+    : RETURN WHITE_SPACE return_value
+    | RETURN WHITE_SPACE return_value WHITE_SPACE* OPEN_PAREN CLOSE_PAREN {notifyErrorListeners("Redundant parenthesis");}
+    | RETURN WHITE_SPACE variable_type {notifyErrorListeners("Invalid return value");}
     ;
 
 return_value
-    : (string | number | label | expression | function_calling_without_semicolon)
+    : (string | number | label | expression | function_calling)
     ;
 
 // arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100, (x * 50) * (x * 15)
@@ -148,7 +154,7 @@ expression
 value_expression
     : number
     | label
-    | function_calling_without_semicolon
+    | function_calling
     ;
 
 // comparison statement Ex. i == 0, (5 + 4 > 4 && T) || (F && !(x==0))
@@ -239,6 +245,8 @@ loop_statement
 
 loop_structure
     : (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
+    | (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* {notifyErrorListeners("Missing closing curly brackets");}
+    | (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET {notifyErrorListeners("Missing opening curly brackets");}
     ;
 
 loop_variable_declaration
@@ -262,11 +270,8 @@ for_statement
 // function calling = (void | non void)
 // Ex. testOne(testOne(),x+1,"strfe",3,testOne(x+1));
 function_calling
-    : label OPEN_PAREN function_parameters? CLOSE_PAREN SEMICOLON
-    ;
-
-function_calling_without_semicolon
     : label OPEN_PAREN function_parameters? CLOSE_PAREN
+    | label OPEN_PAREN function_parameters? CLOSE_PAREN OPEN_PAREN function_parameters? CLOSE_PAREN {notifyErrorListeners("Redundant parenthesis");}
     ;
 
 function_parameters
@@ -274,7 +279,7 @@ function_parameters
     ;
 
 function_paremeters_value
-    : (function_calling_without_semicolon | label | expression | string | number)
+    : (function_calling | label | expression | string | number)
     ;
 
 // function declaration = (void | non void)
