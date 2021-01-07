@@ -1,7 +1,7 @@
 grammar Main;	
 // Starting Node	
 start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE* WHITE_SPACE* EOF;
-// start: statements EOF;
+// start: expression EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -142,13 +142,37 @@ return_value
     : (string | number | label | expression | function_calling)
     ;
 
-// arithmetic statement Ex. 100*100+100+num, 100+(100*100), (100+100)*100, (x * 50) * (x * 15)
+// arithmetic statement Ex. (100/(100+100)/((100-13)*(123+132))), (x * 50) * (x * 15)
+// expression
+//     : value_expression
+//     | expression WHITE_SPACE? (operators) WHITE_SPACE? expression
+//     | expression WHITE_SPACE? (operators operators+) WHITE_SPACE? expression {notifyErrorListeners("Multiple operators");}
+//     | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
+//     | OPEN_PAREN+ WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Multiple parenthesis");}
+//     ;
+
 expression
-    : value_expression
-    | expression WHITE_SPACE? (operators) WHITE_SPACE? expression
-    | expression WHITE_SPACE? (operators operators+) WHITE_SPACE? expression {notifyErrorListeners("Multiple operators");}
-    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
-    | OPEN_PAREN+ WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Multiple parenthesis");}
+    : parenthesis_expression WHITE_SPACE? operator_expression
+    ;
+
+operator_expression
+    : first_expression_operator
+    | second_expression_operator
+    ;
+
+parenthesis_expression
+    : OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
+    | value_expression WHITE_SPACE? operator_expression
+    ;
+
+first_expression_operator
+    : first_operators WHITE_SPACE? expression
+    | 
+    ;
+
+second_expression_operator
+    : second_operators WHITE_SPACE? expression
+    | 
     ;
 
 value_expression
