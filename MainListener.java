@@ -676,4 +676,24 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMain_function(MainParser.Main_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#main_head}.
+	 * @param ctx the parse tree
+	 */
+	void enterMain_head(MainParser.Main_headContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#main_head}.
+	 * @param ctx the parse tree
+	 */
+	void exitMain_head(MainParser.Main_headContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#main_body}.
+	 * @param ctx the parse tree
+	 */
+	void enterMain_body(MainParser.Main_bodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#main_body}.
+	 * @param ctx the parse tree
+	 */
+	void exitMain_body(MainParser.Main_bodyContext ctx);
 }

@@ -814,6 +814,30 @@ public class MainBaseListener implements MainListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMain_function(MainParser.Main_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMain_head(MainParser.Main_headContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMain_head(MainParser.Main_headContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMain_body(MainParser.Main_bodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMain_body(MainParser.Main_bodyContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

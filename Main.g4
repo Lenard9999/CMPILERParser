@@ -167,11 +167,13 @@ parenthesis_expression
 
 first_expression_operator
     : first_operators WHITE_SPACE? expression
+    | first_operators operators+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
     | 
     ;
 
 second_expression_operator
     : second_operators WHITE_SPACE? expression
+    | second_operators operators+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
     | 
     ;
 
@@ -379,7 +381,18 @@ scoping_statement
 
 // main function 
 main_function
-    : MAIN OPEN_PAREN CLOSE_PAREN WHITE_SPACE* OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET NEWLINE*
+    : main_head main_body 
+    ;
+
+main_head
+    : MAIN OPEN_PAREN CLOSE_PAREN WHITE_SPACE*
+    ;
+
+main_body
+    : OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
+    | WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET {notifyErrorListeners("Missing opening curly brackets");}
+    | OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* {notifyErrorListeners("Missing closing curly brackets");}
+    | WHITE_SPACE* statements+ WHITE_SPACE* {notifyErrorListeners("Missing curly brackets");}
     ;
 
 // Lexers
