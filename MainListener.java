@@ -257,6 +257,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitArray_variable(MainParser.Array_variableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#array_assign_body}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_assign_body(MainParser.Array_assign_bodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#array_assign_body}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_assign_body(MainParser.Array_assign_bodyContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#array_assign}.
 	 * @param ctx the parse tree
 	 */
@@ -696,4 +706,24 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMain_body(MainParser.Main_bodyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#main_body_first}.
+	 * @param ctx the parse tree
+	 */
+	void enterMain_body_first(MainParser.Main_body_firstContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#main_body_first}.
+	 * @param ctx the parse tree
+	 */
+	void exitMain_body_first(MainParser.Main_body_firstContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#main_body_second}.
+	 * @param ctx the parse tree
+	 */
+	void enterMain_body_second(MainParser.Main_body_secondContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#main_body_second}.
+	 * @param ctx the parse tree
+	 */
+	void exitMain_body_second(MainParser.Main_body_secondContext ctx);
 }

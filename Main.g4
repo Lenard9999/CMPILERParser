@@ -61,6 +61,7 @@ variable_declaration_vartype
 
 variable_declaration_no_vartype
     : label WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression 
+    | label WHITE_SPACE? EQUAL WHITE_SPACE? assigned_expression {notifyErrorListeners("Invalid symbol '==' for declaration");}
     ;
 
 array_size 
@@ -69,18 +70,24 @@ array_size
 
 array_variable 
     : label OPEN_BRACE array_size CLOSE_BRACE
+    | label OPEN_BRACE? array_size CLOSE_BRACE? {notifyErrorListeners("Missing brace/s");}
+    ;
+
+array_assign_body
+    : CREATE WHITE_SPACE variable_type OPEN_BRACE array_size CLOSE_BRACE
+    | CREATE WHITE_SPACE variable_type OPEN_BRACE? array_size CLOSE_BRACE? {notifyErrorListeners("Missing brace for array declaration");}
     ;
 
 array_assign
-    : WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE array_size CLOSE_BRACE
-    | WHITE_SPACE? EQUAL WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE array_size CLOSE_BRACE {notifyErrorListeners("Invalid symbol '==' for declaration");}
-    | WHITE_SPACE? ASSIGN WHITE_SPACE? CREATE WHITE_SPACE? variable_type OPEN_BRACE? array_size CLOSE_BRACE? {notifyErrorListeners("Missing brace for array declaration");}
+    : WHITE_SPACE? ASSIGN WHITE_SPACE? array_assign_body
+    | WHITE_SPACE? EQUAL WHITE_SPACE? array_assign_body {notifyErrorListeners("Invalid symbol '==' for declaration");}
     | WHITE_SPACE? ASSIGN WHITE_SPACE? (array_variable | assigned_expression)
     | WHITE_SPACE? EQUAL WHITE_SPACE? (array_variable | assigned_expression) {notifyErrorListeners("Invalid symbol '==' for declaration");}
     ;
 
 array_declaration_vartype
     : variable_type OPEN_BRACE CLOSE_BRACE WHITE_SPACE label array_assign?
+    | variable_type OPEN_BRACE? CLOSE_BRACE? WHITE_SPACE label array_assign? {notifyErrorListeners("Missing braces during array declaration");}
     ;
 
 array_declaration_no_vartype
@@ -386,13 +393,21 @@ main_function
 
 main_head
     : MAIN OPEN_PAREN CLOSE_PAREN WHITE_SPACE*
+    | MAIN OPEN_PAREN? CLOSE_PAREN? WHITE_SPACE* {notifyErrorListeners("Missing parenthesis");}
     ;
 
 main_body
-    : OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
-    | WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET {notifyErrorListeners("Missing opening curly brackets");}
-    | OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* {notifyErrorListeners("Missing closing curly brackets");}
-    | WHITE_SPACE* statements+ WHITE_SPACE* {notifyErrorListeners("Missing curly brackets");}
+    : main_body_first WHITE_SPACE* statements+ WHITE_SPACE* main_body_second
+    ;
+
+main_body_first
+    : OPEN_BRACKET
+    | {notifyErrorListeners("Missing opening curly brackets");}
+    ;
+
+main_body_second
+    : CLOSE_BRACKET
+    | {notifyErrorListeners("Missing closing curly brackets");}
     ;
 
 // Lexers

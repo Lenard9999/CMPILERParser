@@ -1,5 +1,5 @@
 func int[] append(int[] arr, int arr_size, int x) {
-    int[] newArr = create int[arr_size + 1];
+    int[ newArr == create int[arr_size + 1];
     
     for i = 1 up to arr_size {
         newArr[i] = arr[i];
@@ -26,7 +26,7 @@ main() {
 	int i = 0; //single-line declaration
     float fX = 2.0f; //a float declaration must end with an .f notation.
     constant int MY_CONSTANT = 500; //constant declaration
-
+    
 	bool false_flag = F; bool true_flag = T;
 
     String myString = "Test";
@@ -109,4 +109,4 @@ main() {
         print("Cannot access b here!");
         print("Cannot access c here!");
     }
-
+}

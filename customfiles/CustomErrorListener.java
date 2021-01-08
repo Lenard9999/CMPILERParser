@@ -17,7 +17,7 @@ public class CustomErrorListener extends BaseErrorListener {
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
             String msg, RecognitionException e) {
 
-        String error_Mesaage = msg + " at line " + line + " ,position " + charPositionInLine;
+        String error_Mesaage = msg + " at line " + line;
         error_List.add(error_Mesaage);
 
         System.out.println(error_Mesaage);
