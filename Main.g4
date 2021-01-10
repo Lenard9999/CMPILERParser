@@ -55,8 +55,13 @@ assigned_expression
     : (string | number | label | expression | comparison_statement | function_calling) 
     ;
 
+multiple_declaration
+    : label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? 
+    | label (WHITE_SPACE? EQUAL WHITE_SPACE? assigned_expression)? {notifyErrorListeners("Invalid symbol '==' for declaration");}
+    ;
+
 variable_declaration_vartype
-    : variable_type WHITE_SPACE label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? 
+    : variable_type WHITE_SPACE multiple_declaration (WHITE_SPACE? COMMA WHITE_SPACE? multiple_declaration)*
     ;
 
 variable_declaration_no_vartype
@@ -122,15 +127,29 @@ extended_value_print
 
 // scan statement Ex. scan("Give me a random number: ", i+1); 
 scan_statement
-    : SCAN OPEN_PAREN display_message_parameter WHITE_SPACE? COMMA WHITE_SPACE? value_parameter CLOSE_PAREN
+    : SCAN OPEN_PAREN scan_body CLOSE_PAREN
+    | SCAN OPEN_PAREN? scan_body CLOSE_PAREN? {notifyErrorListeners("Missing parenthesis");}
+    ;
+
+scan_body
+    : display_message_parameter WHITE_SPACE? COMMA WHITE_SPACE? value_parameter
+    | display_message_parameter WHITE_SPACE? COMMA? {notifyErrorListeners("Missing 2nd scan parameter");}
+    | display_message_parameter WHITE_SPACE? COMMA? WHITE_SPACE? value_parameter {notifyErrorListeners("Missing comma");}
     ;
 
 display_message_parameter 
     : string
+    | ((expression | scan_label) WHITE_SPACE*) {notifyErrorListeners("1st parameter should be string");}
+    ;
+
+scan_label
+    : (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+
     ;
 
 value_parameter
     : expression
+    | label
+    | string {notifyErrorListeners("2nd parameter should not be string");}
     ;
 
 // constant declaration Ex. constant int MY_CONSTANT = 500;
@@ -169,18 +188,23 @@ operator_expression
 
 parenthesis_expression
     : OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
+    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("uneven parenthesis, duplicate ')'");}
+    | OPEN_PAREN+ WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN {notifyErrorListeners("uneven parenthesis, duplicate '('");}
     | value_expression WHITE_SPACE? operator_expression
+    | value_expression (WHITE_SPACE (value_expression | string))+ WHITE_SPACE? operator_expression {notifyErrorListeners("Too many value expression");}
     ;
 
 first_expression_operator
     : first_operators WHITE_SPACE? expression
-    | first_operators operators+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
+    | first_operators WHITE_SPACE? expression (WHITE_SPACE (value_expression | string))+ {notifyErrorListeners("Too many value expression");}
+    | first_operators (WHITE_SPACE* operators)+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
     | 
     ;
 
 second_expression_operator
     : second_operators WHITE_SPACE? expression
-    | second_operators operators+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
+    | second_operators WHITE_SPACE? expression (WHITE_SPACE (value_expression | string))+ {notifyErrorListeners("Too many value expression");}
+    | second_operators (WHITE_SPACE* operators)+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
     | 
     ;
 

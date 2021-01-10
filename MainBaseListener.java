@@ -267,6 +267,18 @@ public class MainBaseListener implements MainListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMultiple_declaration(MainParser.Multiple_declarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiple_declaration(MainParser.Multiple_declarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariable_declaration_vartype(MainParser.Variable_declaration_vartypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -411,6 +423,18 @@ public class MainBaseListener implements MainListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterScan_body(MainParser.Scan_bodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScan_body(MainParser.Scan_bodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDisplay_message_parameter(MainParser.Display_message_parameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -418,6 +442,18 @@ public class MainBaseListener implements MainListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDisplay_message_parameter(MainParser.Display_message_parameterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterScan_label(MainParser.Scan_labelContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScan_label(MainParser.Scan_labelContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

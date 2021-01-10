@@ -217,6 +217,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitAssigned_expression(MainParser.Assigned_expressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#multiple_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiple_declaration(MainParser.Multiple_declarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#multiple_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiple_declaration(MainParser.Multiple_declarationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#variable_declaration_vartype}.
 	 * @param ctx the parse tree
 	 */
@@ -337,6 +347,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitScan_statement(MainParser.Scan_statementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#scan_body}.
+	 * @param ctx the parse tree
+	 */
+	void enterScan_body(MainParser.Scan_bodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#scan_body}.
+	 * @param ctx the parse tree
+	 */
+	void exitScan_body(MainParser.Scan_bodyContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#display_message_parameter}.
 	 * @param ctx the parse tree
 	 */
@@ -346,6 +366,16 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDisplay_message_parameter(MainParser.Display_message_parameterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#scan_label}.
+	 * @param ctx the parse tree
+	 */
+	void enterScan_label(MainParser.Scan_labelContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#scan_label}.
+	 * @param ctx the parse tree
+	 */
+	void exitScan_label(MainParser.Scan_labelContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#value_parameter}.
 	 * @param ctx the parse tree
