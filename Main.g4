@@ -188,8 +188,8 @@ operator_expression
 
 parenthesis_expression
     : OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
+    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? {notifyErrorListeners("uneven parenthesis, missing ')'");}
     | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("uneven parenthesis, duplicate ')'");}
-    | OPEN_PAREN+ WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN {notifyErrorListeners("uneven parenthesis, duplicate '('");}
     | value_expression WHITE_SPACE? operator_expression
     | value_expression (WHITE_SPACE (value_expression | string))+ WHITE_SPACE? operator_expression {notifyErrorListeners("Too many value expression");}
     ;
@@ -258,7 +258,17 @@ conditional_statement
     ;
 
 conditional_comparison_structure
-    : OPEN_PAREN comparison_statement CLOSE_PAREN WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
+    : with_comparison conditional_body
+    ;
+
+with_comparison
+    : OPEN_PAREN comparison_statement CLOSE_PAREN WHITE_SPACE? THEN WHITE_SPACE?
+    | OPEN_PAREN? comparison_statement CLOSE_PAREN? WHITE_SPACE? THEN WHITE_SPACE? {notifyErrorListeners("uneven parenthesis");}
+    ;
+
+conditional_body
+    : OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
+    | OPEN_BRACKET? WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET? {notifyErrorListeners("uneven bracket/s");}
     ;
 
 if_statement
@@ -270,7 +280,7 @@ else_if_statement
     ;
 
 else_statement
-    : ELSE WHITE_SPACE? THEN WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
+    : ELSE WHITE_SPACE? THEN WHITE_SPACE? conditional_body
     ;
 
 // loop statement = (for | while)
