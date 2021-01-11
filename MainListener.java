@@ -447,6 +447,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitParenthesis_expression(MainParser.Parenthesis_expressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#error_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterError_expression(MainParser.Error_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#error_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitError_expression(MainParser.Error_expressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#first_expression_operator}.
 	 * @param ctx the parse tree
 	 */

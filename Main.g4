@@ -1,11 +1,11 @@
 grammar Main;	
 // Starting Node	
 start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE* WHITE_SPACE* EOF;
-// start: expression EOF;
+// start: any_declaration EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
-number : '-'?DIGIT*('.'DIGIT+)'f'? | '-'?DIGIT+ ;
+number : '-'?DIGIT+('.'DIGIT+)'f'? | '-'?DIGIT+ ;
 label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ label_words* label*;
 label_words : (constant_words | conditional_words | loop_words | variable_type | DIGIT) ;
 

@@ -1,3 +1,3 @@
 main() {
-  scan(Give me a random number: "str");
+  bool y = (x+1) * (x+1;
 }

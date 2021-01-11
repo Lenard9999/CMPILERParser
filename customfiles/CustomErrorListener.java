@@ -1,10 +1,11 @@
 package customfiles;
 
-import java.util.ArrayList;
-
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.RecognitionException;
+
+import java.util.ArrayList;
+
 
 public class CustomErrorListener extends BaseErrorListener {
 
@@ -17,10 +18,10 @@ public class CustomErrorListener extends BaseErrorListener {
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
             String msg, RecognitionException e) {
 
-        String error_Mesaage = msg + " at line " + line;
-        error_List.add(error_Mesaage);
+        String error_Message = msg + " at line " + line;
+        error_List.add(error_Message);
 
-        System.out.println(error_Mesaage);
+        System.out.println(error_Message);
     }
 
     public int getErrorList(){

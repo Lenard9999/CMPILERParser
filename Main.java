@@ -51,6 +51,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         parse();
         // parse(this.input); for GUI
-        // showTree();
+        showTree();
     }
 }
