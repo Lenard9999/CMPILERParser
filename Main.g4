@@ -115,7 +115,7 @@ print_statement
 value_print
     : extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
     | label (WHITE_SPACE label)+ {notifyErrorListeners("No double quotes");}
-    | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)* PLUS+ {notifyErrorListeners("additional ‘+’ sign at end of print");}
+    | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)* PLUS+ {notifyErrorListeners("Additional ‘+’ sign at end of print");}
     ;
 
 extended_value_print
@@ -188,8 +188,8 @@ operator_expression
 
 parenthesis_expression
     : OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
-    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? {notifyErrorListeners("uneven parenthesis, missing ')'");}
-    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("uneven parenthesis, duplicate ')'");}
+    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? {notifyErrorListeners("Uneven parenthesis, missing ')'");}
+    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Uneven parenthesis, duplicate ')'");}
     | value_expression WHITE_SPACE? operator_expression
     | value_expression (WHITE_SPACE (value_expression | string))+ WHITE_SPACE? operator_expression {notifyErrorListeners("Too many value expression");}
     ;
@@ -261,14 +261,19 @@ conditional_comparison_structure
     : with_comparison conditional_body
     ;
 
+with_then
+    : WHITE_SPACE? THEN WHITE_SPACE?
+    | WHITE_SPACE? THEN? WHITE_SPACE? {notifyErrorListeners("Missing 'then' word");}
+    ;
+
 with_comparison
-    : OPEN_PAREN comparison_statement CLOSE_PAREN WHITE_SPACE? THEN WHITE_SPACE?
-    | OPEN_PAREN? comparison_statement CLOSE_PAREN? WHITE_SPACE? THEN WHITE_SPACE? {notifyErrorListeners("uneven parenthesis");}
+    : OPEN_PAREN comparison_statement CLOSE_PAREN with_then
+    | OPEN_PAREN? comparison_statement CLOSE_PAREN? with_then {notifyErrorListeners("Uneven parenthesis");}
     ;
 
 conditional_body
     : OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
-    | OPEN_BRACKET? WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET? {notifyErrorListeners("uneven bracket/s");}
+    | OPEN_BRACKET? WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET? {notifyErrorListeners("Uneven bracket/s");}
     ;
 
 if_statement
@@ -377,6 +382,7 @@ function_paremeters_value
 function_declaration
     : void_function
     | non_void_function
+    | error_function
     ;
 
 function_structure
@@ -384,15 +390,20 @@ function_structure
     ;
 
 function_declaration_parameters
-    : variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label (COMMA WHITE_SPACE? function_declaration_parameters)*
+    : variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label (COMMA WHITE_SPACE? function_declaration_parameters)?
+    | variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label (COMMA? WHITE_SPACE+ function_declaration_parameters)? {notifyErrorListeners("Missing comma after each parameter");}
     ;
 
 void_function
-    : FUNC WHITE_SPACE? VOID WHITE_SPACE function_structure
+    : FUNC WHITE_SPACE VOID WHITE_SPACE function_structure
     ;
 
 non_void_function
-    : FUNC WHITE_SPACE? variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE function_structure
+    : FUNC WHITE_SPACE variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE function_structure
+    ;
+
+error_function
+    : FUNC WHITE_SPACE function_structure {notifyErrorListeners("Missing datatype after func");}
     ;
 
 // proper scoping

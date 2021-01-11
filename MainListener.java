@@ -527,6 +527,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitConditional_comparison_structure(MainParser.Conditional_comparison_structureContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#with_then}.
+	 * @param ctx the parse tree
+	 */
+	void enterWith_then(MainParser.With_thenContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#with_then}.
+	 * @param ctx the parse tree
+	 */
+	void exitWith_then(MainParser.With_thenContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#with_comparison}.
 	 * @param ctx the parse tree
 	 */
@@ -716,6 +726,16 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNon_void_function(MainParser.Non_void_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#error_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterError_function(MainParser.Error_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#error_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitError_function(MainParser.Error_functionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#scoping_statement}.
 	 * @param ctx the parse tree

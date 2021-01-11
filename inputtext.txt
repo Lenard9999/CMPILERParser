@@ -1,17 +1,7 @@
+func callPrinter(String message int hello) {
+    print(message);
+}
+
 main() {
-  if(x == 0) then {
-        print("Hello");
-    } else if(x > 0) then {
-        print("Hello2");
-        
-        if(y + z > ((x*y)/fX)) then {
-            print("Yey!");
-        } else then {
-            print("Nay!");
-            return n+1;
-        }
-    }
-    else then {
-        print("Hello3");
-    }
+  int x;
 }
