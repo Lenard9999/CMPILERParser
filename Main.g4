@@ -110,6 +110,7 @@ print("Thank you very much!");
 */
 print_statement
     : PRINT OPEN_PAREN value_print CLOSE_PAREN
+    | PRINT OPEN_PAREN? value_print CLOSE_PAREN? {notifyErrorListeners("Missing parenthesis");}
     ;
 
 value_print
