@@ -1,5 +1,5 @@
 func int[] append(int[] arr, int arr_size, int x) {
-    int[] newArr = create int[arr_size + 1];
+    int[] ne1w2Arr = create int[arr_size + 1];
     
     for i = 1 up to arr_size {
         newArr[i] = arr[i];

@@ -6,8 +6,8 @@ start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE* 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
 number : '-'?DIGIT+('.'DIGIT+)'f'? | '-'?DIGIT+ ;
-label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ label_words* label*;
-label_words : (constant_words | conditional_words | loop_words | variable_type | DIGIT) ;
+label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ DIGIT* label_words* label*;
+label_words : (constant_words | conditional_words | loop_words | variable_type) ;
 
 // Operators
 first_operators : (MULTI | DIV | MOD) ;
@@ -125,7 +125,7 @@ extended_value_print
     | function_calling
     ;
 
-// scan statement Ex. scan("Give me a random number: ", i+1); 
+// scan statement Ex. scan("Give me a random number: ", i); 
 scan_statement
     : SCAN OPEN_PAREN scan_body CLOSE_PAREN
     | SCAN OPEN_PAREN? scan_body CLOSE_PAREN? {notifyErrorListeners("Missing parenthesis");}
@@ -147,8 +147,7 @@ scan_label
     ;
 
 value_parameter
-    : expression
-    | label
+    : label
     | string {notifyErrorListeners("2nd parameter should not be string");}
     ;
 
