@@ -233,6 +233,7 @@ value_comparison
     : label
     | number
     | expression
+    | string
     ;
 
 // conditional statement (if else-if else)
