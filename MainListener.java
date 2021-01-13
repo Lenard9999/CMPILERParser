@@ -467,6 +467,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitSecond_expression_operator(MainParser.Second_expression_operatorContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#array_label}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_label(MainParser.Array_labelContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#array_label}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_label(MainParser.Array_labelContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#value_expression}.
 	 * @param ctx the parse tree
 	 */
@@ -476,6 +486,66 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValue_expression(MainParser.Value_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#alt_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlt_expression(MainParser.Alt_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#alt_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlt_expression(MainParser.Alt_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#alt_operator_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlt_operator_expression(MainParser.Alt_operator_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#alt_operator_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlt_operator_expression(MainParser.Alt_operator_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#alt_parenthesis_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlt_parenthesis_expression(MainParser.Alt_parenthesis_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#alt_parenthesis_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlt_parenthesis_expression(MainParser.Alt_parenthesis_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#alt_first_expression_operator}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlt_first_expression_operator(MainParser.Alt_first_expression_operatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#alt_first_expression_operator}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlt_first_expression_operator(MainParser.Alt_first_expression_operatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#alt_second_expression_operator}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlt_second_expression_operator(MainParser.Alt_second_expression_operatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#alt_second_expression_operator}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlt_second_expression_operator(MainParser.Alt_second_expression_operatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#alt_value_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlt_value_expression(MainParser.Alt_value_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#alt_value_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlt_value_expression(MainParser.Alt_value_expressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#comparison_statement}.
 	 * @param ctx the parse tree

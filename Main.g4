@@ -1,7 +1,7 @@
 grammar Main;	
 // Starting Node	
 start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE* WHITE_SPACE* EOF;
-// start: any_declaration EOF;
+// start: main_function EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
@@ -208,7 +208,52 @@ second_expression_operator
     | 
     ;
 
+array_label 
+    : label OPEN_BRACE alt_expression CLOSE_BRACE
+    | label OPEN_BRACE? alt_expression CLOSE_BRACE? {notifyErrorListeners("Missing brace/s");}
+    ;
+
 value_expression
+    : number
+    | label
+    | function_calling
+    | array_label
+    ;
+
+
+// alt_expression
+alt_expression
+    : alt_parenthesis_expression WHITE_SPACE? alt_operator_expression
+    ;
+
+alt_operator_expression
+    : alt_first_expression_operator
+    | alt_second_expression_operator
+    ;
+
+alt_parenthesis_expression
+    : OPEN_PAREN WHITE_SPACE? alt_expression WHITE_SPACE? CLOSE_PAREN
+    | OPEN_PAREN WHITE_SPACE? alt_expression WHITE_SPACE? {notifyErrorListeners("Uneven parenthesis, missing ')'");}
+    | OPEN_PAREN WHITE_SPACE? alt_expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Uneven parenthesis, duplicate ')'");}
+    | alt_value_expression WHITE_SPACE? alt_operator_expression
+    | alt_value_expression (WHITE_SPACE (alt_value_expression | string))+ WHITE_SPACE? alt_operator_expression {notifyErrorListeners("Too many value expression");}
+    ;
+
+alt_first_expression_operator
+    : first_operators WHITE_SPACE? alt_expression
+    | first_operators WHITE_SPACE? alt_expression (WHITE_SPACE (alt_value_expression | string))+ {notifyErrorListeners("Too many value expression");}
+    | first_operators (WHITE_SPACE* operators)+ WHITE_SPACE? alt_expression {notifyErrorListeners("Too Many Operators");}
+    | 
+    ;
+
+alt_second_expression_operator
+    : second_operators WHITE_SPACE? alt_expression
+    | second_operators WHITE_SPACE? alt_expression (WHITE_SPACE (alt_value_expression | string))+ {notifyErrorListeners("Too many value expression");}
+    | second_operators (WHITE_SPACE* operators)+ WHITE_SPACE? alt_expression {notifyErrorListeners("Too Many Operators");}
+    | 
+    ;
+
+alt_value_expression
     : number
     | label
     | function_calling
