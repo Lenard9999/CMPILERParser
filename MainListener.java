@@ -67,6 +67,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitLabel_words(MainParser.Label_wordsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#label_words_withoutsymbol}.
+	 * @param ctx the parse tree
+	 */
+	void enterLabel_words_withoutsymbol(MainParser.Label_words_withoutsymbolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#label_words_withoutsymbol}.
+	 * @param ctx the parse tree
+	 */
+	void exitLabel_words_withoutsymbol(MainParser.Label_words_withoutsymbolContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#first_operators}.
 	 * @param ctx the parse tree
 	 */
@@ -726,6 +736,16 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunction_declaration(MainParser.Function_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#function_label}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_label(MainParser.Function_labelContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_label}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_label(MainParser.Function_labelContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#function_structure}.
 	 * @param ctx the parse tree

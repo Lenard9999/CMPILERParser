@@ -87,6 +87,18 @@ public class MainBaseListener implements MainListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLabel_words_withoutsymbol(MainParser.Label_words_withoutsymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLabel_words_withoutsymbol(MainParser.Label_words_withoutsymbolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFirst_operators(MainParser.First_operatorsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -874,6 +886,18 @@ public class MainBaseListener implements MainListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunction_declaration(MainParser.Function_declarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction_label(MainParser.Function_labelContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_label(MainParser.Function_labelContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

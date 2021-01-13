@@ -11,6 +11,7 @@ label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ DIGIT* label_wo
       ;
 
 label_words : (constant_words | conditional_words | loop_words | variable_type | simple_punctuations) ;
+label_words_withoutsymbol : (constant_words | conditional_words | loop_words | variable_type) ;
 
 // Operators
 first_operators : (MULTI | DIV | MOD) ;
@@ -447,18 +448,23 @@ function_declaration
     | error_function
     ;
 
+function_label
+    : label_words_withoutsymbol* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ DIGIT* label_words_withoutsymbol* function_label*
+    | label_words_withoutsymbol* DIGIT (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ DIGIT* label_words_withoutsymbol* function_label* {notifyErrorListeners("Missing Operator");}
+    ;
+
 function_structure
     : label OPEN_PAREN function_declaration_parameters? CLOSE_PAREN WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET NEWLINE*
     ;
 
 function_declaration_parameters
-    : variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label function_declaration_parameters_body?
-    | variable_type? (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE? label function_declaration_parameters_body? {notifyErrorListeners("Missing data type in function parameter");}
+    : variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE function_label function_declaration_parameters_body?
+    | variable_type? (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE? function_label function_declaration_parameters_body? {notifyErrorListeners("Missing data type in function parameter");}
     ;
 
 function_declaration_parameters_body
     : COMMA WHITE_SPACE? function_declaration_parameters
-    | COMMA? WHITE_SPACE+ function_declaration_parameters {notifyErrorListeners("Missing comma after each parameter");}
+    | WHITE_SPACE+ function_declaration_parameters {notifyErrorListeners("Missing comma after each parameter");}
     ;
 
 void_function
