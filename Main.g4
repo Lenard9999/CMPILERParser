@@ -1,13 +1,16 @@
 grammar Main;	
 // Starting Node	
-start: (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE* WHITE_SPACE* EOF;
-// start: main_function EOF;
+start: (LINECOMMENT NEWLINE?)* (function_declaration WHITE_SPACE*)* WHITE_SPACE* main_function NEWLINE* WHITE_SPACE* EOF;
+// start: any_declaration EOF;
 
 variable_type: (INT_DEC | BOOLEAN_DEC | FLOAT_DEC | STRING_DEC) ;
 string : '"' (DIGIT | lexer_predefined_words | label | WHITE_SPACE)+ '"' ;
 number : '-'?DIGIT+('.'DIGIT+)'f'? | '-'?DIGIT+ ;
-label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ DIGIT* label_words* label*;
-label_words : (constant_words | conditional_words | loop_words | variable_type) ;
+label : label_words* (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ DIGIT* label_words* label*
+      | label_words* DIGIT (LOWERCASE | UNDERSCORE | UPPERCASE | 'f')+ DIGIT* label_words* label* {notifyErrorListeners("Missing Operator");}
+      ;
+
+label_words : (constant_words | conditional_words | loop_words | variable_type | simple_punctuations) ;
 
 // Operators
 first_operators : (MULTI | DIV | MOD) ;
@@ -21,7 +24,7 @@ other_operators : (logical_operators | relational_operators) ;
 lexer_predefined_words : (constant_words | conditional_words | loop_words | simple_punctuations | symbol_words | other_operators | operators | variable_type) ;
 constant_words : (CREATE | CONSTANT | RETURN | PRINT | SCAN | VOID| FUNC | MAIN) ;
 conditional_words : (IF | ELSE | ELSE_IF | THEN) ;
-loop_words : (FOR | UP_TO | DOWN_TO | TO | WHILE) ;
+loop_words : (FOR | UP_TO | DOWN_TO | WHILE) ;
 simple_punctuations : (ASSIGN | EQUAL | SEMICOLON | DOT | COMMA | NOT | QUESTION | COLON | UNDERSCORE | SINGLE_QUOTE) ;
 symbol_words : (OPEN_PAREN | CLOSE_PAREN | OPEN_BRACKET | CLOSE_BRACKET | OPEN_BRACE | CLOSE_BRACE) ;
 
@@ -41,13 +44,16 @@ statements
     | scoping_statement WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
     | function_calling SEMICOLON WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE*
     | function_calling WHITE_SPACE* LINECOMMENT? WHITE_SPACE* NEWLINE* {notifyErrorListeners("Missing semicolon");}
+    | LINECOMMENT
     ;
 
 // Declarations Ex. int x = 0; int x; int[] x = create int[arr + 1]; newArr[arr_size + 1] = x; newArr[arr_size + 1] = arr[i];
 any_declaration 
     : variable_declaration_vartype
+    | ((label | variable_type) WHITE_SPACE)+ variable_declaration_vartype {notifyErrorListeners("Invalid declaration");}
     | variable_declaration_no_vartype
     | array_declaration_vartype
+    | ((label | variable_type) WHITE_SPACE)+ array_declaration_vartype {notifyErrorListeners("Invalid declaration");}
     | array_declaration_no_vartype
     ; 
 
@@ -57,6 +63,7 @@ assigned_expression
 
 multiple_declaration
     : label (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? 
+    | variable_type (WHITE_SPACE? ASSIGN WHITE_SPACE? assigned_expression)? {notifyErrorListeners("Invalid declaration");}
     | label (WHITE_SPACE? EQUAL WHITE_SPACE? assigned_expression)? {notifyErrorListeners("Invalid symbol '==' for declaration");}
     ;
 
@@ -114,8 +121,8 @@ print_statement
     ;
 
 value_print
-    : extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
-    | label (WHITE_SPACE label)+ {notifyErrorListeners("No double quotes");}
+    : label (WHITE_SPACE label)+ {notifyErrorListeners("No double quotes");}
+    | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
     | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)* PLUS+ {notifyErrorListeners("Additional ‘+’ sign at end of print");}
     ;
 
@@ -169,44 +176,44 @@ return_value
     ;
 
 // arithmetic statement Ex. (100/(100+100)/((100-13)*(123+132))), (x * 50) * (x * 15)
+expression
+    : value_expression
+    | expression WHITE_SPACE? (operators) WHITE_SPACE? expression
+    | expression WHITE_SPACE? (operators operators+) WHITE_SPACE? expression {notifyErrorListeners("Multiple operators");}
+    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
+    | OPEN_PAREN+ WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Multiple parenthesis");}
+    ;
+
 // expression
-//     : value_expression
-//     | expression WHITE_SPACE? (operators) WHITE_SPACE? expression
-//     | expression WHITE_SPACE? (operators operators+) WHITE_SPACE? expression {notifyErrorListeners("Multiple operators");}
-//     | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
-//     | OPEN_PAREN+ WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Multiple parenthesis");}
+//     : parenthesis_expression WHITE_SPACE? operator_expression
 //     ;
 
-expression
-    : parenthesis_expression WHITE_SPACE? operator_expression
-    ;
+// operator_expression
+//     : first_expression_operator
+//     | second_expression_operator
+//     ;
 
-operator_expression
-    : first_expression_operator
-    | second_expression_operator
-    ;
+// parenthesis_expression
+//     : OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
+//     | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? {notifyErrorListeners("Uneven parenthesis, missing ')'");}
+//     | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Uneven parenthesis, duplicate ')'");}
+//     | value_expression WHITE_SPACE? operator_expression
+//     | value_expression (WHITE_SPACE (value_expression | string))+ WHITE_SPACE? operator_expression {notifyErrorListeners("Too many value expression");}
+//     ;
 
-parenthesis_expression
-    : OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN
-    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? {notifyErrorListeners("Uneven parenthesis, missing ')'");}
-    | OPEN_PAREN WHITE_SPACE? expression WHITE_SPACE? CLOSE_PAREN+ {notifyErrorListeners("Uneven parenthesis, duplicate ')'");}
-    | value_expression WHITE_SPACE? operator_expression
-    | value_expression (WHITE_SPACE (value_expression | string))+ WHITE_SPACE? operator_expression {notifyErrorListeners("Too many value expression");}
-    ;
+// first_expression_operator
+//     : first_operators WHITE_SPACE? expression
+//     | first_operators WHITE_SPACE? expression (WHITE_SPACE (value_expression | string))+ {notifyErrorListeners("Too many value expression");}
+//     | first_operators (WHITE_SPACE* operators)+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
+//     | 
+//     ;
 
-first_expression_operator
-    : first_operators WHITE_SPACE? expression
-    | first_operators WHITE_SPACE? expression (WHITE_SPACE (value_expression | string))+ {notifyErrorListeners("Too many value expression");}
-    | first_operators (WHITE_SPACE* operators)+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
-    | 
-    ;
-
-second_expression_operator
-    : second_operators WHITE_SPACE? expression
-    | second_operators WHITE_SPACE? expression (WHITE_SPACE (value_expression | string))+ {notifyErrorListeners("Too many value expression");}
-    | second_operators (WHITE_SPACE* operators)+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
-    | 
-    ;
+// second_expression_operator
+//     : second_operators WHITE_SPACE? expression
+//     | second_operators WHITE_SPACE? expression (WHITE_SPACE (value_expression | string))+ {notifyErrorListeners("Too many value expression");}
+//     | second_operators (WHITE_SPACE* operators)+ WHITE_SPACE? expression {notifyErrorListeners("Too Many Operators");}
+//     | 
+//     ;
 
 array_label 
     : label OPEN_BRACE alt_expression CLOSE_BRACE
@@ -308,8 +315,8 @@ conditional_comparison_structure
     ;
 
 with_then
-    : WHITE_SPACE? THEN WHITE_SPACE?
-    | WHITE_SPACE? THEN? WHITE_SPACE? {notifyErrorListeners("Missing 'then' word");}
+    : WHITE_SPACE? THEN WHITE_SPACE? LINECOMMENT? WHITE_SPACE*
+    | WHITE_SPACE? THEN? WHITE_SPACE? LINECOMMENT? WHITE_SPACE* {notifyErrorListeners("Missing 'then' word");}
     ;
 
 with_comparison
@@ -318,8 +325,8 @@ with_comparison
     ;
 
 conditional_body
-    : OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
-    | OPEN_BRACKET? WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET? {notifyErrorListeners("Uneven bracket/s");}
+    : WHITE_SPACE* OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
+    | WHITE_SPACE* OPEN_BRACKET? WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET? {notifyErrorListeners("Uneven bracket/s");}
     ;
 
 if_statement
@@ -361,15 +368,20 @@ loop_statement
     | for_statement
     ;
 
+loop_conditional
+    : UP_TO
+    | DOWN_TO
+    | label {notifyErrorListeners("Must be 'up to' or 'down to' only");}
+    ;
+
 loop_structure
-    : (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET
-    | (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements+ WHITE_SPACE* {notifyErrorListeners("Missing closing curly brackets");}
-    | (UP_TO | DOWN_TO | TO) WHITE_SPACE? expression WHITE_SPACE? WHITE_SPACE* statements+ WHITE_SPACE* CLOSE_BRACKET {notifyErrorListeners("Missing opening curly brackets");}
+    : loop_conditional WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements* WHITE_SPACE* CLOSE_BRACKET
+    | loop_conditional WHITE_SPACE? expression WHITE_SPACE? OPEN_BRACKET WHITE_SPACE* statements* WHITE_SPACE* {notifyErrorListeners("Missing closing curly brackets");}
+    | loop_conditional WHITE_SPACE? expression WHITE_SPACE? WHITE_SPACE* statements* WHITE_SPACE* CLOSE_BRACKET {notifyErrorListeners("Missing opening curly brackets");}
     ;
 
 loop_variable_declaration
-    : (variable_type WHITE_SPACE)? label WHITE_SPACE? ASSIGN WHITE_SPACE? loop_expression 
-    | variable_type WHITE_SPACE label {notifyErrorListeners("Missing assignment operator");}
+    : (variable_type WHITE_SPACE)? label WHITE_SPACE? (ASSIGN WHITE_SPACE? loop_expression)?
     | expression
     ;
 
@@ -389,15 +401,19 @@ for_statement
 // Ex. testOne(testOne(),x+1,"strfe",3,testOne(x+1));
 function_calling
     : label OPEN_PAREN function_parameters? CLOSE_PAREN
+    | label OPEN_PAREN function_parameters? {notifyErrorListeners("Missing closing parenthesis");}
+    | label function_parameters? CLOSE_PAREN {notifyErrorListeners("Missing opening parenthesis");}
     | label OPEN_PAREN function_parameters? CLOSE_PAREN OPEN_PAREN function_parameters? CLOSE_PAREN {notifyErrorListeners("Redundant parenthesis");}
     ;
 
 function_parameters
     : function_paremeters_value (WHITE_SPACE? COMMA WHITE_SPACE? function_paremeters_value)*
-    ;
+    | function_paremeters_value (WHITE_SPACE function_paremeters_value)* {notifyErrorListeners("Missing Comma");}
+    | function_paremeters_value (WHITE_SPACE? COMMA COMMA+ WHITE_SPACE? function_paremeters_value)* {notifyErrorListeners("Too much Commas");}
+    ; 
 
 function_paremeters_value
-    : (function_calling | label | expression | string | number)
+    : (label | expression | string | number | function_calling)
     ;
 
 // function declaration = (void | non void)
@@ -528,7 +544,6 @@ THEN : 'then' ;
 FOR : 'for' ;
 UP_TO : 'up to' ;
 DOWN_TO : 'down to' ;
-TO : 'to' ;
 WHILE : 'while' ;
 
 INT_DEC : 'int' ; 
@@ -585,7 +600,7 @@ NEWLINE
     ;
 
 LINECOMMENT
-    : '//' ~[\r\n]* NEWLINE?
+    : '//' ~[\r\n]* WHITE_SPACE* NEWLINE
     ;
 
 WHITE_SPACE 
