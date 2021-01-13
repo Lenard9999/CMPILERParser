@@ -777,6 +777,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitFunction_declaration_parameters(MainParser.Function_declaration_parametersContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#function_declaration_parameters_body}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_declaration_parameters_body(MainParser.Function_declaration_parameters_bodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#function_declaration_parameters_body}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_declaration_parameters_body(MainParser.Function_declaration_parameters_bodyContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#void_function}.
 	 * @param ctx the parse tree
 	 */
@@ -806,6 +816,16 @@ public interface MainListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitError_function(MainParser.Error_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MainParser#error_function_head}.
+	 * @param ctx the parse tree
+	 */
+	void enterError_function_head(MainParser.Error_function_headContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#error_function_head}.
+	 * @param ctx the parse tree
+	 */
+	void exitError_function_head(MainParser.Error_function_headContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MainParser#scoping_statement}.
 	 * @param ctx the parse tree

@@ -436,8 +436,13 @@ function_structure
     ;
 
 function_declaration_parameters
-    : variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label (COMMA WHITE_SPACE? function_declaration_parameters)?
-    | variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label (COMMA? WHITE_SPACE+ function_declaration_parameters)? {notifyErrorListeners("Missing comma after each parameter");}
+    : variable_type (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE label function_declaration_parameters_body?
+    | variable_type? (OPEN_BRACE CLOSE_BRACE)? WHITE_SPACE? label function_declaration_parameters_body? {notifyErrorListeners("Missing data type in function parameter");}
+    ;
+
+function_declaration_parameters_body
+    : COMMA WHITE_SPACE? function_declaration_parameters
+    | COMMA? WHITE_SPACE+ function_declaration_parameters {notifyErrorListeners("Missing comma after each parameter");}
     ;
 
 void_function
@@ -449,7 +454,11 @@ non_void_function
     ;
 
 error_function
-    : FUNC WHITE_SPACE function_structure {notifyErrorListeners("Missing datatype after func");}
+    : error_function_head function_structure 
+    ;
+
+error_function_head
+    : FUNC WHITE_SPACE {notifyErrorListeners("Missing datatype after func");}
     ;
 
 // proper scoping

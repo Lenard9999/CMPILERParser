@@ -939,6 +939,18 @@ public class MainBaseListener implements MainListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFunction_declaration_parameters_body(MainParser.Function_declaration_parameters_bodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_declaration_parameters_body(MainParser.Function_declaration_parameters_bodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVoid_function(MainParser.Void_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -970,6 +982,18 @@ public class MainBaseListener implements MainListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitError_function(MainParser.Error_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterError_function_head(MainParser.Error_function_headContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitError_function_head(MainParser.Error_function_headContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
