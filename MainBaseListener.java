@@ -399,6 +399,18 @@ public class MainBaseListener implements MainListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterOther_label_for_print_error(MainParser.Other_label_for_print_errorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOther_label_for_print_error(MainParser.Other_label_for_print_errorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterValue_print(MainParser.Value_printContext ctx) { }
 	/**
 	 * {@inheritDoc}

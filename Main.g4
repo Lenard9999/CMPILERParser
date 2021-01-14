@@ -121,8 +121,12 @@ print_statement
     | PRINT OPEN_PAREN? value_print CLOSE_PAREN? {notifyErrorListeners("Missing parenthesis");}
     ;
 
+other_label_for_print_error
+    : (label_words | LOWERCASE | UNDERSCORE | UPPERCASE | DIGIT | 'f')+
+    ;
+
 value_print
-    : label (WHITE_SPACE label)+ {notifyErrorListeners("No double quotes");}
+    : other_label_for_print_error (WHITE_SPACE other_label_for_print_error)+ {notifyErrorListeners("No double quotes");}
     | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)*
     | extended_value_print (WHITE_SPACE? PLUS WHITE_SPACE? extended_value_print WHITE_SPACE?)* PLUS+ {notifyErrorListeners("Additional ‘+’ sign at end of print");}
     ;

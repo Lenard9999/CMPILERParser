@@ -327,6 +327,16 @@ public interface MainListener extends ParseTreeListener {
 	 */
 	void exitPrint_statement(MainParser.Print_statementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MainParser#other_label_for_print_error}.
+	 * @param ctx the parse tree
+	 */
+	void enterOther_label_for_print_error(MainParser.Other_label_for_print_errorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MainParser#other_label_for_print_error}.
+	 * @param ctx the parse tree
+	 */
+	void exitOther_label_for_print_error(MainParser.Other_label_for_print_errorContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MainParser#value_print}.
 	 * @param ctx the parse tree
 	 */
